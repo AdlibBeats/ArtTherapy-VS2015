@@ -1,0 +1,117 @@
+﻿<Page
+    x:Class="ArtTherapy.Pages.MenuPages.MenuPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:ArtTherapy.Pages.MenuPages"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:dc="using:ArtTherapy.ViewModels"
+    xmlns:Interactivity="using:Microsoft.Xaml.Interactivity"
+    xmlns:Interactions="using:Microsoft.Xaml.Interactions.Core"
+    mc:Ignorable="d"
+    d:DesignHeight="640" d:DesignWidth="360">
+    <Page.Resources>
+        <dc:MenuViewModel x:Key="menuViewModel"/>
+    </Page.Resources>
+
+    <Page.Transitions>
+        <TransitionCollection>
+            <NavigationThemeTransition>
+                <NavigationThemeTransition.DefaultNavigationTransitionInfo>
+                    <CommonNavigationTransitionInfo IsStaggeringEnabled="True" />
+                </NavigationThemeTransition.DefaultNavigationTransitionInfo>
+            </NavigationThemeTransition>
+        </TransitionCollection>
+    </Page.Transitions>
+
+    <Grid Background="{StaticResource Static.Grid.Background}" DataContext="{StaticResource menuViewModel}">
+        <Grid.Resources>
+            <CollectionViewSource x:Key="groupItems" IsSourceGrouped="True" Source="{Binding MenuModel.GroupItems.Source}" />
+        </Grid.Resources>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="40" />
+            <RowDefinition Height="1*" />
+        </Grid.RowDefinitions>
+        <Grid Grid.Row="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="40"/>
+                <ColumnDefinition/>
+                <ColumnDefinition Width="40"/>
+            </Grid.ColumnDefinitions>
+            <Grid Grid.Column="0">
+                <Button Style="{StaticResource MenuButton}" Content="&#xE700;" Click="MenuButton_Click" FontSize="32"/>
+            </Grid>
+            <RelativePanel Grid.Column="1">
+                <Button Name="BackButton" Style="{StaticResource MenuButton}" Content="&#xE0E2;" Click="BackButton_Click" FontSize="24" Height="40" Width="40"/>
+                <TextBlock RelativePanel.RightOf="BackButton" Margin="10" FontSize="14"
+                       Text="{Binding ElementName=MainFrame, Path=Content.Title}" TextWrapping="WrapWholeWords"/>
+            </RelativePanel>
+            <ProgressRing Grid.Column="2" VerticalAlignment="Center" HorizontalAlignment="Center" Width="30" Height="30" Foreground="{StaticResource Static.Button.Background}"/>
+        </Grid>
+        <SplitView Name="MainSplitView" Grid.Row="1" DisplayMode="CompactOverlay" CompactPaneLength="40" OpenPaneLength="280">
+            <SplitView.Pane>
+                <Grid Background="{StaticResource Static.SplitView.CompactPane.Background}">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="90"/>
+                        <RowDefinition Height="1*"/>
+                        <RowDefinition Height="10"/>
+                    </Grid.RowDefinitions>
+                    <Button Grid.Row="0" Style="{StaticResource ProfileButton}" Background="{StaticResource Static.ListBoxItem.Normal}">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="40"/>
+                                <ColumnDefinition Width="90"/>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="1*"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Grid.Row="1" Grid.Column="0" VerticalAlignment="Center" FontFamily="Segoe MDL2 Assets" FontSize="18" Margin="10,0" Text="&#xE1E0;"/>
+                            <Ellipse Margin="5" Grid.Column="1" Width="80" Height="80" Grid.RowSpan="3" Fill="Gray"/>
+                            <TextBlock HorizontalAlignment="Left" MaxWidth="150" Grid.Column="2" Grid.Row="0" Text="{Binding ProfileModel.FirstName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Bottom"/>
+                            <TextBlock HorizontalAlignment="Left" MaxWidth="150" Grid.Column="2" Grid.Row="1" Text="{Binding ProfileModel.LastName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                            <TextBlock HorizontalAlignment="Left" MaxWidth="150" Grid.Column="2" Grid.Row="2" Text="{Binding ProfileModel.MiddleName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Foreground="#FF6D6D72"/>
+                            <TextBlock HorizontalAlignment="Right" Margin="0,0,10,0" Foreground="White" Grid.Column="3" Grid.Row="1" VerticalAlignment="Center" FontSize="16" FontFamily="Segoe MDL2 Assets" Text="&#xE0E3;"/>
+                        </Grid>
+                    </Button>
+                    <Grid Grid.Row="1">
+                        <Interactivity:Interaction.Behaviors>
+                            <Interactions:EventTriggerBehavior EventName="SelectionChanged" SourceObject="{Binding ElementName=listBoxItems}">
+                                <Interactions:InvokeCommandAction Command="{Binding CustomCommand}" CommandParameter="{Binding ElementName=listBoxItems, Path=SelectedItem}"/>
+                            </Interactions:EventTriggerBehavior>
+                        </Interactivity:Interaction.Behaviors>
+                        <ListBox x:Name="listBoxItems"
+                                 Background="{x:Null}"
+                                 SelectionMode="Single"
+                                 ScrollViewer.VerticalScrollBarVisibility="Hidden"
+                                 ItemsSource="{Binding Source={StaticResource groupItems}}">
+                            <ListBox.ItemTemplate>
+                                <DataTemplate>
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock Text="{Binding Icon}" VerticalAlignment="Center" FontFamily="Segoe MDL2 Assets" FontSize="18"/>
+                                        <TextBlock Text="{Binding Name}" VerticalAlignment="Center" Margin="10,0" />
+                                    </StackPanel>
+                                </DataTemplate>
+                            </ListBox.ItemTemplate>
+                            <ListBox.GroupStyle>
+                                <GroupStyle>
+                                    <GroupStyle.HeaderTemplate>
+                                        <DataTemplate>
+                                            <Grid Height="40"/>
+                                        </DataTemplate>
+                                    </GroupStyle.HeaderTemplate>
+                                </GroupStyle>
+                            </ListBox.GroupStyle>
+                        </ListBox>
+                    </Grid>
+                </Grid>
+            </SplitView.Pane>
+            <SplitView.Content>
+                <Frame Name="MainFrame" Navigated="MainFrame_Navigated"/>
+            </SplitView.Content>
+        </SplitView>
+    </Grid>
+</Page>
