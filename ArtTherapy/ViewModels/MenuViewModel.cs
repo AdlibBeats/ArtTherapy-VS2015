@@ -15,14 +15,16 @@ using System.Diagnostics;
 using ArtTherapy.Models.ProfileModels;
 using Windows.UI.Xaml.Media.Imaging;
 using Windows.UI.Xaml.Controls;
+using ArtTherapy.Pages.ProfilePages;
+using ArtTherapy.Models.FrameModels;
 
 namespace ArtTherapy.ViewModels
 {
-    public class FrameNavigatedCommand : ICommand
+    public class ProfileClickCommand : ICommand
     {
         #region Public Constructor
 
-        public FrameNavigatedCommand(MenuViewModel viewModel)
+        public ProfileClickCommand(MenuViewModel viewModel)
         {
             ViewModel = viewModel;
         }
@@ -45,12 +47,11 @@ namespace ArtTherapy.ViewModels
 
         public void Execute(object parameter)
         {
-            var currentItemModel = parameter as CurrentItemModel;
-            if (currentItemModel != null)
-                Debug.WriteLine(currentItemModel.Name);
+            ViewModel.FrameModel.Content = new ProfilePage();
         }
         #endregion
     }
+
     public class SelectionChangedCommand : ICommand
     {
         #region Public Constructor
@@ -80,33 +81,25 @@ namespace ArtTherapy.ViewModels
         {
             var currentItemModel = parameter as CurrentItemModel;
             if (currentItemModel != null)
-            {
-                ViewModel.Frame.Navigate(currentItemModel.Type);
-                ViewModel.ClearStackFrame();
-            }
+                ViewModel.FrameModel.Content = currentItemModel.Content;
         }
         #endregion
     }
 
     public class MenuViewModel : DependencyObject
     {
-        public Frame Frame { get; private set; }
-        public MenuViewModel(Frame frame)
+        public MenuViewModel()
         {
-            Frame = frame;
-            Frame.Navigate(typeof(PostPage));
-            ClearStackFrame();
-
             MenuModel = new ItemsModel()
             {
                 GroupItems = new CollectionViewSource(),
                 Items = new ObservableCollection<CurrentItemModel>()
                 {
-                    new CurrentItemModel() { Icon = "\xE10F", Name = "Стихи", ItemsGroup=ItemsGroup.GroupOne, Type = typeof(PostPage) },
-                    new CurrentItemModel() { Icon = "\xE1A5", Name = "Сказки", ItemsGroup=ItemsGroup.GroupOne, Type = typeof(PostPage) },
-                    new CurrentItemModel() { Icon = "\xE7C3", Name = "Статьи", ItemsGroup=ItemsGroup.GroupOne, Type = typeof(PostPage) },
-                    new CurrentItemModel() { Icon = "\xE77F", Name = "О приложении", ItemsGroup=ItemsGroup.GroupTwo, Type = typeof(AboutAppPage) },
-                    new CurrentItemModel() { Icon = "\xE7F4", Name = "Настройки", ItemsGroup=ItemsGroup.GroupThree, Type = typeof(SettingsPage) }
+                    new CurrentItemModel() { Icon = "\xE10F", Name = "Стихи", ItemsGroup=ItemsGroup.GroupOne, Content = new PostPage() },
+                    new CurrentItemModel() { Icon = "\xE1A5", Name = "Сказки", ItemsGroup=ItemsGroup.GroupOne, Content = new PostPage() },
+                    new CurrentItemModel() { Icon = "\xE7C3", Name = "Статьи", ItemsGroup=ItemsGroup.GroupOne, Content = new PostPage() },
+                    new CurrentItemModel() { Icon = "\xE77F", Name = "О приложении", ItemsGroup=ItemsGroup.GroupTwo, Content = new AboutAppPage() },
+                    new CurrentItemModel() { Icon = "\xE7F4", Name = "Настройки", ItemsGroup=ItemsGroup.GroupThree, Content = new SettingsPage() }
                 }
             };
 
@@ -125,16 +118,25 @@ namespace ArtTherapy.ViewModels
                 }
             };
 
+            FrameModel = new FrameModel()
+            {
+                Content = new PostPage()
+            };
+
+            ProfileClickCommand = new ProfileClickCommand(this);
             SelectionChangedCommand = new SelectionChangedCommand(this);
         }
 
-        public void ClearStackFrame()
-        {
-            this.Frame.BackStack.Clear();
-            this.Frame.ForwardStack.Clear();
-        }
-
         #region Public Dependency Properties
+
+        public ICommand ProfileClickCommand
+        {
+            get { return (ICommand)GetValue(ProfileClickCommandProperty); }
+            set { SetValue(ProfileClickCommandProperty, value); }
+        }
+        
+        public static readonly DependencyProperty ProfileClickCommandProperty =
+            DependencyProperty.Register("ProfileClickCommand", typeof(ICommand), typeof(MenuViewModel), new PropertyMetadata(null));
 
         public ICommand SelectionChangedCommand
         {
@@ -144,6 +146,15 @@ namespace ArtTherapy.ViewModels
 
         public static readonly DependencyProperty SelectionChangedCommandProperty =
             DependencyProperty.Register("SelectionChangedCommand", typeof(ICommand), typeof(MenuViewModel), new PropertyMetadata(null));
+
+        public FrameModel FrameModel
+        {
+            get { return (FrameModel)GetValue(FrameModelProperty); }
+            set { SetValue(FrameModelProperty, value); }
+        }
+        
+        public static readonly DependencyProperty FrameModelProperty =
+            DependencyProperty.Register("FrameModel", typeof(FrameModel), typeof(MenuViewModel), new PropertyMetadata(null));
 
         public ProfileModel ProfileModel
         {

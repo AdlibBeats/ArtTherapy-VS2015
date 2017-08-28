@@ -8,11 +8,8 @@ namespace ArtTherapy.Models
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        protected virtual T GetValue<T>(T value, string propertyName)
-        {
+        protected virtual void OnPropertyChanged(string propertyName) =>
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-            return value;
-        }
 
         #endregion
     }

@@ -2,7 +2,6 @@
     x:Class="ArtTherapy.Pages.MenuPages.MenuPage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:local="using:ArtTherapy.Pages.MenuPages"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:dc="using:ArtTherapy.ViewModels"
@@ -41,11 +40,11 @@
             <RelativePanel Grid.Column="1">
                 <Button Name="BackButton" Style="{StaticResource MenuButton}" Content="&#xE0E2;" Click="BackButton_Click" FontSize="24" Height="40" Width="40"/>
                 <TextBlock RelativePanel.RightOf="BackButton" Margin="10" FontSize="14"
-                       Text="{Binding ElementName=MainFrame, Path=Content.Title}" TextWrapping="WrapWholeWords"/>
+                       Text="{Binding ElementName=rootFrame, Path=Content.Title}" TextWrapping="WrapWholeWords"/>
             </RelativePanel>
             <ProgressRing Grid.Column="2" VerticalAlignment="Center" HorizontalAlignment="Center" Width="30" Height="30" Foreground="{StaticResource Static.Button.Background}"/>
         </Grid>
-        <SplitView Name="MainSplitView" Grid.Row="1" DisplayMode="CompactOverlay" CompactPaneLength="40" OpenPaneLength="280">
+        <SplitView Grid.Row="1" Name="MainSplitView" DisplayMode="CompactOverlay" CompactPaneLength="40" OpenPaneLength="280">
             <SplitView.Pane>
                 <Grid Background="{StaticResource Static.SplitView.CompactPane.Background}">
                     <Grid.RowDefinitions>
@@ -53,7 +52,12 @@
                         <RowDefinition Height="1*"/>
                         <RowDefinition Height="10"/>
                     </Grid.RowDefinitions>
-                    <Button Grid.Row="0" Style="{StaticResource ProfileButton}" Background="{StaticResource Static.ListBoxItem.Normal}">
+                    <Button Grid.Row="0" x:Name="profileButton" Style="{StaticResource ProfileButton}">
+                        <Interactivity:Interaction.Behaviors>
+                            <Interactions:EventTriggerBehavior EventName="Click" SourceObject="{Binding ElementName=profileButton}">
+                                <Interactions:InvokeCommandAction Command="{Binding ProfileClickCommand}"/>
+                            </Interactions:EventTriggerBehavior>
+                        </Interactivity:Interaction.Behaviors>
                         <Grid>
                             <Grid.RowDefinitions>
                                 <RowDefinition/>
@@ -79,16 +83,16 @@
                         </Grid>
                     </Button>
                     <Grid Grid.Row="1">
-                        <Interactivity:Interaction.Behaviors>
-                            <Interactions:EventTriggerBehavior EventName="SelectionChanged" SourceObject="{Binding ElementName=listBoxItems}">
-                                <Interactions:InvokeCommandAction Command="{Binding SelectionChangedCommand}" CommandParameter="{Binding ElementName=listBoxItems, Path=SelectedItem}"/>
-                            </Interactions:EventTriggerBehavior>
-                        </Interactivity:Interaction.Behaviors>
                         <ListBox x:Name="listBoxItems"
                                  Background="{x:Null}"
                                  SelectionMode="Single"
                                  ScrollViewer.VerticalScrollBarVisibility="Hidden"
                                  ItemsSource="{Binding Source={StaticResource groupItems}}">
+                            <Interactivity:Interaction.Behaviors>
+                                <Interactions:EventTriggerBehavior EventName="SelectionChanged" SourceObject="{Binding ElementName=listBoxItems}">
+                                    <Interactions:InvokeCommandAction Command="{Binding SelectionChangedCommand}" CommandParameter="{Binding ElementName=listBoxItems, Path=SelectedItem}"/>
+                                </Interactions:EventTriggerBehavior>
+                            </Interactivity:Interaction.Behaviors>
                             <ListBox.ItemTemplate>
                                 <DataTemplate>
                                     <StackPanel Orientation="Horizontal">
@@ -111,7 +115,7 @@
                 </Grid>
             </SplitView.Pane>
             <SplitView.Content>
-                <Frame Name="rootFrame"/>
+                <Frame Name="rootFrame" Content="{Binding FrameModel.Content, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
             </SplitView.Content>
         </SplitView>
     </Grid>

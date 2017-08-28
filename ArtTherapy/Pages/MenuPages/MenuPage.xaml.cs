@@ -22,14 +22,22 @@ namespace ArtTherapy.Pages.MenuPages
         public string Title
         {
             get { return _Title; }
-            set { _Title = GetValue(value, nameof(Title)); }
+            set
+            {
+                _Title = value;
+                OnPropertyChanged(nameof(Title));
+            }
         }
         private string _Title;
 
         public NavigateEventTypes NavigateEventType
         {
             get { return _NavigateEventType; }
-            set { _NavigateEventType = GetValue(value, nameof(NavigateEventType)); }
+            set
+            {
+                _NavigateEventType = value;
+                OnPropertyChanged(nameof(NavigateEventType));
+            }
         }
         private NavigateEventTypes _NavigateEventType;
 
@@ -41,7 +49,7 @@ namespace ArtTherapy.Pages.MenuPages
 
             Title = "Меню";
             NavigateEventType = NavigateEventTypes.ListBoxSelectionChanged;
-            this.DataContext = new MenuViewModel(rootFrame);
+            this.DataContext = new MenuViewModel();
             Initialized?.Invoke(this, new EventArgs());
         }
 
@@ -60,11 +68,8 @@ namespace ArtTherapy.Pages.MenuPages
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        private T GetValue<T>(T value, string propertyName)
-        {
+        private void OnPropertyChanged(string propertyName) =>
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-            return value;
-        }
 
         #endregion
     }
