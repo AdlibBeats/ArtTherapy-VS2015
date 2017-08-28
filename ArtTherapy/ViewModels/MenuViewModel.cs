@@ -13,14 +13,49 @@ using System.Linq;
 using System.Windows.Input;
 using System.Diagnostics;
 using ArtTherapy.Models.ProfileModels;
+using Windows.UI.Xaml.Media.Imaging;
+using Windows.UI.Xaml.Controls;
 
 namespace ArtTherapy.ViewModels
 {
-    public class CustomCommand : ICommand
+    public class FrameNavigatedCommand : ICommand
     {
         #region Public Constructor
 
-        public CustomCommand(MenuViewModel viewModel)
+        public FrameNavigatedCommand(MenuViewModel viewModel)
+        {
+            ViewModel = viewModel;
+        }
+        #endregion
+
+        #region Private Members
+
+        private MenuViewModel ViewModel;
+
+        #endregion
+
+        #region ICommand Members
+
+        public event EventHandler CanExecuteChanged;
+
+        public bool CanExecute(object parameter)
+        {
+            return true;
+        }
+
+        public void Execute(object parameter)
+        {
+            var currentItemModel = parameter as CurrentItemModel;
+            if (currentItemModel != null)
+                Debug.WriteLine(currentItemModel.Name);
+        }
+        #endregion
+    }
+    public class SelectionChangedCommand : ICommand
+    {
+        #region Public Constructor
+
+        public SelectionChangedCommand(MenuViewModel viewModel)
         {
             ViewModel = viewModel;
         }
@@ -46,8 +81,8 @@ namespace ArtTherapy.ViewModels
             var currentItemModel = parameter as CurrentItemModel;
             if (currentItemModel != null)
             {
-                Debug.WriteLine(currentItemModel.Name);
-                ViewModel.ProfileModel.FirstName = currentItemModel.Name;
+                ViewModel.Frame.Navigate(currentItemModel.Type);
+                ViewModel.ClearStackFrame();
             }
         }
         #endregion
@@ -55,8 +90,13 @@ namespace ArtTherapy.ViewModels
 
     public class MenuViewModel : DependencyObject
     {
-        public MenuViewModel()
+        public Frame Frame { get; private set; }
+        public MenuViewModel(Frame frame)
         {
+            Frame = frame;
+            Frame.Navigate(typeof(PostPage));
+            ClearStackFrame();
+
             MenuModel = new ItemsModel()
             {
                 GroupItems = new CollectionViewSource(),
@@ -75,24 +115,35 @@ namespace ArtTherapy.ViewModels
 
             ProfileModel = new ProfileModel()
             {
-                FirstName = "Андрей",
-                LastName = "Васильев",
-                MiddleName = "Сергеевич"
+                FirstName = "Юлия",
+                LastName = "Свиридова",
+                MiddleName = "Психология",
+                Avatar = new BitmapImage()
+                {
+                    CreateOptions = BitmapCreateOptions.IgnoreImageCache,
+                    UriSource = new Uri("ms-appx:///Avatar/avatar.jpg", UriKind.RelativeOrAbsolute)
+                }
             };
 
-            CustomCommand = new CustomCommand(this);
+            SelectionChangedCommand = new SelectionChangedCommand(this);
+        }
+
+        public void ClearStackFrame()
+        {
+            this.Frame.BackStack.Clear();
+            this.Frame.ForwardStack.Clear();
         }
 
         #region Public Dependency Properties
 
-        public ICommand CustomCommand
+        public ICommand SelectionChangedCommand
         {
-            get { return (ICommand)GetValue(CustomCommandProperty); }
-            set { SetValue(CustomCommandProperty, value); }
+            get { return (ICommand)GetValue(SelectionChangedCommandProperty); }
+            set { SetValue(SelectionChangedCommandProperty, value); }
         }
 
-        public static readonly DependencyProperty CustomCommandProperty =
-            DependencyProperty.Register("CustomCommand", typeof(ICommand), typeof(MenuViewModel), new PropertyMetadata(null));
+        public static readonly DependencyProperty SelectionChangedCommandProperty =
+            DependencyProperty.Register("SelectionChangedCommand", typeof(ICommand), typeof(MenuViewModel), new PropertyMetadata(null));
 
         public ProfileModel ProfileModel
         {

@@ -8,14 +8,14 @@ namespace ArtTherapy.Models.ItemsModels
         public ObservableCollection<CurrentItemModel> Items
         {
             get { return _Items; }
-            set { _Items = GetValue(value, nameof(ItemsModel.Items)); }
+            set { _Items = GetValue(value, nameof(Items)); }
         }
         private ObservableCollection<CurrentItemModel> _Items;
 
         public CollectionViewSource GroupItems
         {
             get { return _GroupItems; }
-            set { _GroupItems = GetValue(value, nameof(ItemsModel.GroupItems)); }
+            set { _GroupItems = GetValue(value, nameof(GroupItems)); }
         }
         private CollectionViewSource _GroupItems;
     }

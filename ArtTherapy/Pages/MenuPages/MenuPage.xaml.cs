@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ArtTherapy.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
@@ -21,14 +22,14 @@ namespace ArtTherapy.Pages.MenuPages
         public string Title
         {
             get { return _Title; }
-            set { _Title = GetValue(value, nameof(MenuPage.Title)); }
+            set { _Title = GetValue(value, nameof(Title)); }
         }
         private string _Title;
 
         public NavigateEventTypes NavigateEventType
         {
             get { return _NavigateEventType; }
-            set { _NavigateEventType = GetValue(value, nameof(MenuPage.NavigateEventType)); }
+            set { _NavigateEventType = GetValue(value, nameof(NavigateEventType)); }
         }
         private NavigateEventTypes _NavigateEventType;
 
@@ -40,6 +41,7 @@ namespace ArtTherapy.Pages.MenuPages
 
             Title = "Меню";
             NavigateEventType = NavigateEventTypes.ListBoxSelectionChanged;
+            this.DataContext = new MenuViewModel(rootFrame);
             Initialized?.Invoke(this, new EventArgs());
         }
 
@@ -50,12 +52,8 @@ namespace ArtTherapy.Pages.MenuPages
 
         private void BackButton_Click(object sender, RoutedEventArgs e)
         {
-            if (MainFrame.CanGoBack)
-                MainFrame.GoBack();
-        }
-
-        private void MainFrame_Navigated(object sender, NavigationEventArgs e)
-        {
+            //if (MainFrame.CanGoBack)
+            //    MainFrame.GoBack();
         }
 
         #region INotifyPropertyChanged Members

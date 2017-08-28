@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
@@ -13,18 +14,40 @@ using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 
-// Шаблон элемента пустой страницы задокументирован по адресу http://go.microsoft.com/fwlink/?LinkId=234238
-
 namespace ArtTherapy.Pages.AboutAppPages
 {
-    /// <summary>
-    /// Пустая страница, которую можно использовать саму по себе или для перехода внутри фрейма.
-    /// </summary>
-    public sealed partial class AboutAppPage : Page
+    public sealed partial class AboutAppPage : Page, IPage
     {
+        public string Title
+        {
+            get { return _Title; }
+            set { _Title = GetValue(value, nameof(Title)); }
+        }
+        private string _Title;
+
+        public NavigateEventTypes NavigateEventType
+        {
+            get { return _NavigateEventType; }
+            set { _NavigateEventType = GetValue(value, nameof(NavigateEventType)); }
+        }
+        private NavigateEventTypes _NavigateEventType;
+
+        public event EventHandler<EventArgs> Initialized;
         public AboutAppPage()
         {
             this.InitializeComponent();
         }
+
+        #region INotifyPropertyChanged Members
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        private T GetValue<T>(T value, string propertyName)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+            return value;
+        }
+
+        #endregion
     }
 }

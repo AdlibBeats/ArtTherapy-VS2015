@@ -8,6 +8,6 @@
     mc:Ignorable="d">
 
     <Grid Background="{StaticResource Static.Grid.Background}">
-
+        <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="24" Text="Settings Page"/>
     </Grid>
 </Page>
