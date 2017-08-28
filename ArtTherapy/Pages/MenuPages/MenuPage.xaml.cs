@@ -56,7 +56,6 @@ namespace ArtTherapy.Pages.MenuPages
 
         private void MainFrame_Navigated(object sender, NavigationEventArgs e)
         {
-            //TODO:
         }
 
         #region INotifyPropertyChanged Members
