@@ -138,17 +138,17 @@ namespace ArtTherapy.ViewModels
     {
         public MenuViewModel()
         {
-            // fix
+            // fix E80F <- домик, сказки E11D
             MenuModel = new ItemsModel()
             {
                 GroupItems = new CollectionViewSource(),
                 Items = new ObservableCollection<CurrentItemModel>()
                 {
-                    new CurrentItemModel() { Id = 2, Icon = "\xE10F", Name = "Стихи", ItemsGroup=ItemsGroup.GroupOne, Content = new PostPage(2, "Стихи") },
-                    new CurrentItemModel() { Id = 3, Icon = "\xE1A5", Name = "Сказки", ItemsGroup=ItemsGroup.GroupOne, Content = new PostPage(3, "Сказки") },
-                    new CurrentItemModel() { Id = 4, Icon = "\xE7C3", Name = "Статьи", ItemsGroup=ItemsGroup.GroupOne, Content = new PostPage(4, "Статьи") },
-                    new CurrentItemModel() { Id = 5, Icon = "\xE77F", Name = "О приложении", ItemsGroup=ItemsGroup.GroupTwo, Content = new AboutAppPage() },
-                    new CurrentItemModel() { Id = 6, Icon = "\xE7F4", Name = "Настройки", ItemsGroup=ItemsGroup.GroupThree, Content = new SettingsPage() }
+                    new CurrentItemModel() { Id = 2, Icon = "\xE15C", Name = "Стихи", ItemsGroup=ItemsGroup.GroupOne, Content = new PostPage(2, "Стихи") },
+                    new CurrentItemModel() { Id = 3, Icon = "\xE12F", Name = "Сказки", ItemsGroup=ItemsGroup.GroupOne, Content = new PostPage(3, "Сказки") },
+                    new CurrentItemModel() { Id = 4, Icon = "\xE12A", Name = "Статьи", ItemsGroup=ItemsGroup.GroupOne, Content = new PostPage(4, "Статьи") },
+                    new CurrentItemModel() { Id = 5, Icon = "\xE11B", Name = "О приложении", ItemsGroup=ItemsGroup.GroupTwo, Content = new AboutAppPage() },
+                    new CurrentItemModel() { Id = 6, Icon = "\xE115", Name = "Настройки", ItemsGroup=ItemsGroup.GroupThree, Content = new SettingsPage() }
                 },
                 SelectedIndex = 0,
                 IsMenuPaneOpen = false
@@ -159,6 +159,8 @@ namespace ArtTherapy.ViewModels
 
             ProfileModel = new ProfileModel()
             {
+                Id = 1,
+                Icon = "\xE13D",
                 FirstName = "Юлия",
                 LastName = "Свиридова",
                 MiddleName = "Психология",

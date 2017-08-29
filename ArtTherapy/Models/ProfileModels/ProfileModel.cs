@@ -4,6 +4,28 @@ namespace ArtTherapy.Models.ProfileModels
 {
     public class ProfileModel : BaseModel
     {
+        public uint Id
+        {
+            get { return _Id; }
+            set
+            {
+                _Id = value;
+                OnPropertyChanged(nameof(Id));
+            }
+        }
+        private uint _Id;
+
+        public string Icon
+        {
+            get { return _Icon; }
+            set
+            {
+                _Icon = value;
+                OnPropertyChanged(nameof(Icon));
+            }
+        }
+        private string _Icon;
+
         public bool IsChecked
         {
             get { return _IsChecked; }

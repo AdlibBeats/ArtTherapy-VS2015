@@ -62,16 +62,6 @@ namespace ArtTherapy.Pages.ProfilePages
             Initialized?.Invoke(this, new EventArgs());
         }
 
-        public ProfilePage(uint id, string title)
-        {
-            this.InitializeComponent();
-
-            Id = id;
-            Title = title;
-            NavigateEventType = NavigateEventTypes.ListBoxSelectionChanged;
-            Initialized?.Invoke(this, new EventArgs());
-        }
-
         #region INotifyPropertyChanged Members
 
         public event PropertyChangedEventHandler PropertyChanged;
