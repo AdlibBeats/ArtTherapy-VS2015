@@ -18,6 +18,17 @@ namespace ArtTherapy.Pages.PostPages
 {
     public sealed partial class CurrentPostPage : Page, IPage
     {
+        public uint Id
+        {
+            get { return _Id; }
+            set
+            {
+                _Id = value;
+                OnPropertyChanged(nameof(Id));
+            }
+        }
+        private uint _Id;
+
         public string Title
         {
             get { return _Title; }

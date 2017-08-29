@@ -18,6 +18,17 @@ namespace ArtTherapy.Pages.AboutAppPages
 {
     public sealed partial class AboutAppPage : Page, IPage
     {
+        public uint Id
+        {
+            get { return _Id; }
+            set
+            {
+                _Id = value;
+                OnPropertyChanged(nameof(Id));
+            }
+        }
+        private uint _Id;
+
         public string Title
         {
             get { return _Title; }
@@ -45,7 +56,18 @@ namespace ArtTherapy.Pages.AboutAppPages
         {
             this.InitializeComponent();
 
+            Id = 5;
             Title = "О приложении";
+            NavigateEventType = NavigateEventTypes.ListBoxSelectionChanged;
+            Initialized?.Invoke(this, new EventArgs());
+        }
+
+        public AboutAppPage(uint id, string title)
+        {
+            this.InitializeComponent();
+
+            Id = id;
+            Title = title;
             NavigateEventType = NavigateEventTypes.ListBoxSelectionChanged;
             Initialized?.Invoke(this, new EventArgs());
         }

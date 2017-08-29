@@ -18,6 +18,17 @@ namespace ArtTherapy.Pages.ProfilePages
 {
     public sealed partial class ProfilePage : Page, IPage
     {
+        public uint Id
+        {
+            get { return _Id; }
+            set
+            {
+                _Id = value;
+                OnPropertyChanged(nameof(Id));
+            }
+        }
+        private uint _Id;
+
         public string Title
         {
             get { return _Title; }
@@ -45,7 +56,18 @@ namespace ArtTherapy.Pages.ProfilePages
         {
             this.InitializeComponent();
 
+            Id = 1;
             Title = "Профиль";
+            NavigateEventType = NavigateEventTypes.ListBoxSelectionChanged;
+            Initialized?.Invoke(this, new EventArgs());
+        }
+
+        public ProfilePage(uint id, string title)
+        {
+            this.InitializeComponent();
+
+            Id = id;
+            Title = title;
             NavigateEventType = NavigateEventTypes.ListBoxSelectionChanged;
             Initialized?.Invoke(this, new EventArgs());
         }

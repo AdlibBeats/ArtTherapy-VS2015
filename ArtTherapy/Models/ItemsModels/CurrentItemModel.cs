@@ -14,6 +14,17 @@ namespace ArtTherapy.Models.ItemsModels
     }
     public class CurrentItemModel : BaseModel
     {
+        public uint Id
+        {
+            get { return _Id; }
+            set
+            {
+                _Id = value;
+                OnPropertyChanged(nameof(Id));
+            }
+        }
+        private uint _Id;
+
         public string Icon
         {
             get { return _Icon; }

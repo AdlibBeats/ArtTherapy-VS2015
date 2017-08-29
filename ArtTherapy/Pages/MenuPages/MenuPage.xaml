@@ -35,7 +35,13 @@
                 <ColumnDefinition Width="40"/>
             </Grid.ColumnDefinitions>
             <Grid Grid.Column="0">
-                <Button Style="{StaticResource MenuButton}" Content="&#xE700;" Click="MenuButton_Click" FontSize="32"/>
+                <Button x:Name="menuPaneButton" Style="{StaticResource MenuButton}" Content="&#xE700;" FontSize="32">
+                    <Interactivity:Interaction.Behaviors>
+                        <Interactions:EventTriggerBehavior EventName="Click" SourceObject="{Binding ElementName=menuPaneButton}">
+                            <Interactions:InvokeCommandAction Command="{Binding MenuPaneButtonClickCommand}"/>
+                        </Interactions:EventTriggerBehavior>
+                    </Interactivity:Interaction.Behaviors>
+                </Button>
             </Grid>
             <RelativePanel Grid.Column="1">
                 <Button Name="BackButton" Style="{StaticResource MenuButton}" Content="&#xE0E2;" Click="BackButton_Click" FontSize="24" Height="40" Width="40"/>
@@ -57,7 +63,7 @@
                                   IsChecked="{Binding ProfileModel.IsChecked, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
                         <Interactivity:Interaction.Behaviors>
                             <Interactions:EventTriggerBehavior EventName="Click" SourceObject="{Binding ElementName=profileButton}">
-                                <Interactions:InvokeCommandAction Command="{Binding ProfileClickCommand}"/>
+                                <Interactions:InvokeCommandAction Command="{Binding ProfileButtonClickCommand}"/>
                             </Interactions:EventTriggerBehavior>
                         </Interactivity:Interaction.Behaviors>
                         <Grid>
@@ -93,7 +99,7 @@
                                  SelectedIndex="{Binding MenuModel.SelectedIndex, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
                             <Interactivity:Interaction.Behaviors>
                                 <Interactions:EventTriggerBehavior EventName="SelectionChanged" SourceObject="{Binding ElementName=listBoxItems}">
-                                    <Interactions:InvokeCommandAction Command="{Binding SelectionChangedCommand}" CommandParameter="{Binding ElementName=listBoxItems, Path=SelectedItem}"/>
+                                    <Interactions:InvokeCommandAction Command="{Binding MenuListSelectionChangedCommand}" CommandParameter="{Binding ElementName=listBoxItems, Path=SelectedItem}"/>
                                 </Interactions:EventTriggerBehavior>
                             </Interactivity:Interaction.Behaviors>
                             <ListBox.ItemTemplate>

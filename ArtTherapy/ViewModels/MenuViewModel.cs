@@ -17,9 +17,42 @@ using Windows.UI.Xaml.Media.Imaging;
 using Windows.UI.Xaml.Controls;
 using ArtTherapy.Pages.ProfilePages;
 using ArtTherapy.Models.FrameModels;
+using ArtTherapy.Pages;
 
 namespace ArtTherapy.ViewModels
 {
+    public class MenuPaneButtonClickCommand : ICommand
+    {
+        #region Public Constructor
+
+        public MenuPaneButtonClickCommand(MenuViewModel viewModel)
+        {
+            ViewModel = viewModel;
+        }
+        #endregion
+
+        #region Private Members
+
+        private MenuViewModel ViewModel;
+
+        #endregion
+
+        #region ICommand Members
+
+        public event EventHandler CanExecuteChanged;
+
+        public bool CanExecute(object parameter)
+        {
+            return true;
+        }
+
+        public void Execute(object parameter)
+        {
+            ViewModel.SetMenuPaneOpen(true);
+        }
+        #endregion
+    }
+
     public class ProfileClickCommand : ICommand
     {
         #region Public Constructor
@@ -47,19 +80,25 @@ namespace ArtTherapy.ViewModels
 
         public void Execute(object parameter)
         {
-            ViewModel.FrameModel.Content = new ProfilePage();
-            ViewModel.ProfileModel.IsChecked = true;
-            ViewModel.MenuModel.IsMenuPaneOpen = false;
-            ViewModel.MenuModel.SelectedIndex = -1;
+            ViewModel.SetMenuSelectedIndex(-1);
+            ViewModel.SetProfileChecked(true);
+
+            IPage currentPage = ViewModel.FrameModel.Content;
+            if (currentPage.Id != 1)
+            {
+                ViewModel.SetMenuPaneOpen(false);
+                ViewModel.SetFrameContent(new ProfilePage());
+                Debug.WriteLine(ViewModel.FrameModel.Content.Title);
+            }
         }
         #endregion
     }
 
-    public class SelectionChangedCommand : ICommand
+    public class MenuListSelectionChangedCommand : ICommand
     {
         #region Public Constructor
 
-        public SelectionChangedCommand(MenuViewModel viewModel)
+        public MenuListSelectionChangedCommand(MenuViewModel viewModel)
         {
             ViewModel = viewModel;
         }
@@ -82,12 +121,14 @@ namespace ArtTherapy.ViewModels
 
         public void Execute(object parameter)
         {
-            var currentItemModel = parameter as CurrentItemModel;
-            if (currentItemModel != null)
+            var newItemModel = parameter as CurrentItemModel;
+            IPage currentPage = ViewModel.FrameModel.Content;
+            if (newItemModel != null && currentPage.Id != newItemModel.Id)
             {
-                ViewModel.FrameModel.Content = currentItemModel.Content;
-                ViewModel.ProfileModel.IsChecked = false;
-                ViewModel.MenuModel.IsMenuPaneOpen = false;
+                ViewModel.SetProfileChecked(false);
+                ViewModel.SetMenuPaneOpen(false);
+                ViewModel.SetFrameContent(newItemModel.Content);
+                Debug.WriteLine(ViewModel.FrameModel.Content.Title);
             }
         }
         #endregion
@@ -103,11 +144,11 @@ namespace ArtTherapy.ViewModels
                 GroupItems = new CollectionViewSource(),
                 Items = new ObservableCollection<CurrentItemModel>()
                 {
-                    new CurrentItemModel() { Icon = "\xE10F", Name = "Стихи", ItemsGroup=ItemsGroup.GroupOne, Content = new PostPage() },
-                    new CurrentItemModel() { Icon = "\xE1A5", Name = "Сказки", ItemsGroup=ItemsGroup.GroupOne, Content = new PostPage() },
-                    new CurrentItemModel() { Icon = "\xE7C3", Name = "Статьи", ItemsGroup=ItemsGroup.GroupOne, Content = new PostPage() },
-                    new CurrentItemModel() { Icon = "\xE77F", Name = "О приложении", ItemsGroup=ItemsGroup.GroupTwo, Content = new AboutAppPage() },
-                    new CurrentItemModel() { Icon = "\xE7F4", Name = "Настройки", ItemsGroup=ItemsGroup.GroupThree, Content = new SettingsPage() }
+                    new CurrentItemModel() { Id = 2, Icon = "\xE10F", Name = "Стихи", ItemsGroup=ItemsGroup.GroupOne, Content = new PostPage(2, "Стихи") },
+                    new CurrentItemModel() { Id = 3, Icon = "\xE1A5", Name = "Сказки", ItemsGroup=ItemsGroup.GroupOne, Content = new PostPage(3, "Сказки") },
+                    new CurrentItemModel() { Id = 4, Icon = "\xE7C3", Name = "Статьи", ItemsGroup=ItemsGroup.GroupOne, Content = new PostPage(4, "Статьи") },
+                    new CurrentItemModel() { Id = 5, Icon = "\xE77F", Name = "О приложении", ItemsGroup=ItemsGroup.GroupTwo, Content = new AboutAppPage() },
+                    new CurrentItemModel() { Id = 6, Icon = "\xE7F4", Name = "Настройки", ItemsGroup=ItemsGroup.GroupThree, Content = new SettingsPage() }
                 },
                 SelectedIndex = 0,
                 IsMenuPaneOpen = false
@@ -131,32 +172,62 @@ namespace ArtTherapy.ViewModels
 
             FrameModel = new FrameModel()
             {
-                Content = new PostPage()
+                Content = new PostPage(2, "Стихи")
             };
 
-            ProfileClickCommand = new ProfileClickCommand(this);
-            SelectionChangedCommand = new SelectionChangedCommand(this);
+            MenuPaneButtonClickCommand = new MenuPaneButtonClickCommand(this);
+            ProfileButtonClickCommand = new ProfileClickCommand(this);
+            MenuListSelectionChangedCommand = new MenuListSelectionChangedCommand(this);
+        }
+
+        public void SetProfileChecked(bool value)
+        {
+            this.ProfileModel.IsChecked = value;
+        }
+
+        public void SetMenuPaneOpen(bool value)
+        {
+            this.MenuModel.IsMenuPaneOpen = value;
+        }
+
+        public void SetFrameContent(IPage value)
+        {
+            this.FrameModel.Content = value;
+        }
+
+        public void SetMenuSelectedIndex(int value)
+        {
+            this.MenuModel.SelectedIndex = value;
         }
 
         #region Public Dependency Properties
 
-        public ICommand ProfileClickCommand
+        public ICommand MenuPaneButtonClickCommand
         {
-            get { return (ICommand)GetValue(ProfileClickCommandProperty); }
-            set { SetValue(ProfileClickCommandProperty, value); }
+            get { return (ICommand)GetValue(MenuPaneButtonClickCommandProperty); }
+            set { SetValue(MenuPaneButtonClickCommandProperty, value); }
+        }
+
+        public static readonly DependencyProperty MenuPaneButtonClickCommandProperty =
+            DependencyProperty.Register("MenuPaneButtonClickCommand", typeof(ICommand), typeof(MenuViewModel), new PropertyMetadata(null));
+
+        public ICommand ProfileButtonClickCommand
+        {
+            get { return (ICommand)GetValue(ProfileButtonClickCommandProperty); }
+            set { SetValue(ProfileButtonClickCommandProperty, value); }
         }
         
-        public static readonly DependencyProperty ProfileClickCommandProperty =
-            DependencyProperty.Register("ProfileClickCommand", typeof(ICommand), typeof(MenuViewModel), new PropertyMetadata(null));
+        public static readonly DependencyProperty ProfileButtonClickCommandProperty =
+            DependencyProperty.Register("ProfileButtonClickCommand", typeof(ICommand), typeof(MenuViewModel), new PropertyMetadata(null));
 
-        public ICommand SelectionChangedCommand
+        public ICommand MenuListSelectionChangedCommand
         {
-            get { return (ICommand)GetValue(SelectionChangedCommandProperty); }
-            set { SetValue(SelectionChangedCommandProperty, value); }
+            get { return (ICommand)GetValue(MenuListSelectionChangedCommandProperty); }
+            set { SetValue(MenuListSelectionChangedCommandProperty, value); }
         }
 
-        public static readonly DependencyProperty SelectionChangedCommandProperty =
-            DependencyProperty.Register("SelectionChangedCommand", typeof(ICommand), typeof(MenuViewModel), new PropertyMetadata(null));
+        public static readonly DependencyProperty MenuListSelectionChangedCommandProperty =
+            DependencyProperty.Register("MenuListSelectionChangedCommand", typeof(ICommand), typeof(MenuViewModel), new PropertyMetadata(null));
 
         public FrameModel FrameModel
         {

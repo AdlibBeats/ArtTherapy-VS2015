@@ -21,6 +21,7 @@ namespace ArtTherapy.Pages
 
     public interface IPage : IDataContextElement
     {
+        uint Id { get; set; }
         string Title { get; set; }
         NavigateEventTypes NavigateEventType { get; set; }
         Frame Frame { get; }

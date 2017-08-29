@@ -18,6 +18,17 @@ namespace ArtTherapy.Pages.PostPages
 {
     public sealed partial class PostPage : Page, IPage
     {
+        public uint Id
+        {
+            get { return _Id; }
+            set
+            {
+                _Id = value;
+                OnPropertyChanged(nameof(Id));
+            }
+        }
+        private uint _Id;
+
         public string Title
         {
             get { return _Title; }
@@ -41,11 +52,23 @@ namespace ArtTherapy.Pages.PostPages
         private NavigateEventTypes _NavigateEventType;
 
         public event EventHandler<EventArgs> Initialized;
+
         public PostPage()
         {
             this.InitializeComponent();
 
-            Title = "Статьи";
+            Id = 2;
+            Title = "Стихи";
+            NavigateEventType = NavigateEventTypes.ListBoxSelectionChanged;
+            Initialized?.Invoke(this, new EventArgs());
+        }
+
+        public PostPage(uint id, string title)
+        {
+            this.InitializeComponent();
+
+            Id = id;
+            Title = title;
             NavigateEventType = NavigateEventTypes.ListBoxSelectionChanged;
             Initialized?.Invoke(this, new EventArgs());
         }
