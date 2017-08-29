@@ -5,17 +5,47 @@ namespace ArtTherapy.Models.ItemsModels
 {
     public class ItemsModel : BaseModel
     {
+        public bool IsMenuPaneOpen
+        {
+            get { return _IsMenuPaneOpen; }
+            set
+            {
+                _IsMenuPaneOpen = value;
+                OnPropertyChanged(nameof(IsMenuPaneOpen));
+            }
+        }
+        private bool _IsMenuPaneOpen;
+
+        public int SelectedIndex
+        {
+            get { return _SelectedIndex; }
+            set
+            {
+                _SelectedIndex = value;
+                OnPropertyChanged(nameof(SelectedIndex));
+            }
+        }
+        private int _SelectedIndex;
+
         public ObservableCollection<CurrentItemModel> Items
         {
             get { return _Items; }
-            set { _Items = GetValue(value, nameof(ItemsModel.Items)); }
+            set
+            {
+                _Items = value;
+                OnPropertyChanged(nameof(Items));
+            }
         }
         private ObservableCollection<CurrentItemModel> _Items;
 
         public CollectionViewSource GroupItems
         {
             get { return _GroupItems; }
-            set { _GroupItems = GetValue(value, nameof(ItemsModel.GroupItems)); }
+            set
+            {
+                _GroupItems = value;
+                OnPropertyChanged(nameof(GroupItems));
+            }
         }
         private CollectionViewSource _GroupItems;
     }

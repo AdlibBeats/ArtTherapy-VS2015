@@ -52,7 +52,7 @@ namespace ArtTherapy.Extensions
             RootFrame = rootFrame;
 
             // Установка фона фрейма
-            RootFrame.Background = new SolidColorBrush(Colors.Black);
+            RootFrame.Background = new SolidColorBrush(Colors.Orange);
 
             // Установка минимального размера окна
             ApplicationView.GetForCurrentView().SetPreferredMinSize(new Size(300, 300));
@@ -78,8 +78,8 @@ namespace ArtTherapy.Extensions
             var statusBar = StatusBar.GetForCurrentView() as StatusBar;
             if (statusBar != null)
             {
-                statusBar.ForegroundColor = Colors.White;
-                statusBar.BackgroundColor = Colors.Black;
+                statusBar.ForegroundColor = Colors.Black;
+                statusBar.BackgroundColor = Colors.Orange;
                 statusBar.BackgroundOpacity = 1;
             }
 
@@ -112,11 +112,11 @@ namespace ArtTherapy.Extensions
             if (titleBar != null)
             {
                 titleBar.ButtonHoverBackgroundColor = Colors.Gray;
-                titleBar.ButtonHoverForegroundColor = Colors.White;
-                titleBar.ButtonBackgroundColor = Colors.Black;
-                titleBar.ButtonForegroundColor = Colors.White;
-                titleBar.BackgroundColor = Colors.Black;
-                titleBar.ForegroundColor = Colors.White;
+                titleBar.ButtonHoverForegroundColor = Colors.Black;
+                titleBar.ButtonBackgroundColor = Colors.Orange;
+                titleBar.ButtonForegroundColor = Colors.Black;
+                titleBar.BackgroundColor = Colors.Orange;
+                titleBar.ForegroundColor = Colors.Black;
             }
 
             return true;

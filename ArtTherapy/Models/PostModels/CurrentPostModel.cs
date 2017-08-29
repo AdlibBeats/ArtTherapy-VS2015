@@ -7,35 +7,55 @@ namespace ArtTherapy.Models.PostModels
         public uint Id
         {
             get { return _Id; }
-            set { _Id = GetValue(value, nameof(Id)); }
+            set
+            {
+                _Id = value;
+                OnPropertyChanged(nameof(Id));
+            }
         }
         private uint _Id;
 
         public ImageSource Image
         {
             get { return _Image; }
-            set { _Image = GetValue(value, nameof(Image)); }
+            set
+            {
+                _Image = value;
+                OnPropertyChanged(nameof(Image));
+            }
         }
         private ImageSource _Image;
 
         public string Name
         {
             get { return _Name; }
-            set { _Name = GetValue(value, nameof(Name)); }
+            set
+            {
+                _Name = value;
+                OnPropertyChanged(nameof(Name));
+            }
         }
         private string _Name;
 
         public string Description
         {
             get { return _Description; }
-            set { _Description = GetValue(value, nameof(Description)); }
+            set
+            {
+                _Description = value;
+                OnPropertyChanged(nameof(Description));
+            }
         }
         private string _Description;
 
         public string Type
         {
             get { return _Type; }
-            set { _Type = GetValue(value, nameof(Type)); }
+            set
+            {
+                _Type = value;
+                OnPropertyChanged(nameof(Type));
+            }
         }
         private string _Type;
     }

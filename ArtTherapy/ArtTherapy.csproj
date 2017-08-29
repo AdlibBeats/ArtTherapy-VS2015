@@ -100,6 +100,7 @@
     <Compile Include="Extensions\AppSettingsExtension.cs" />
     <Compile Include="Extensions\ImageSourceExtension.cs" />
     <Compile Include="Models\BaseModel.cs" />
+    <Compile Include="Models\FrameModels\FrameModel.cs" />
     <Compile Include="Models\ItemsModels\CurrentItemModel.cs" />
     <Compile Include="Models\ItemsModels\ItemsModel.cs" />
     <Compile Include="Models\PostModels\CurrentPostModel.cs" />
@@ -118,6 +119,9 @@
     <Compile Include="Pages\PostPages\PostPage.xaml.cs">
       <DependentUpon>PostPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Pages\ProfilePages\ProfilePage.xaml.cs">
+      <DependentUpon>ProfilePage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Pages\SettingsPages\SettingsPage.xaml.cs">
       <DependentUpon>SettingsPage.xaml</DependentUpon>
     </Compile>
@@ -132,6 +136,7 @@
     <None Include="ArtTherapy_TemporaryKey.pfx" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Avatar\avatar.jpg" />
     <Content Include="Properties\Default.rd.xml" />
     <Content Include="Assets\LockScreenLogo.scale-200.png" />
     <Content Include="Assets\SplashScreen.scale-200.png" />
@@ -159,6 +164,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Pages\PostPages\PostPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Pages\ProfilePages\ProfilePage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

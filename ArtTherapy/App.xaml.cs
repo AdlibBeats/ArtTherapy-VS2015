@@ -75,8 +75,36 @@ namespace ArtTherapy
                     // параметр
                     rootFrame.Navigate(typeof(MenuPage), e.Arguments);
                 }
+
+                //Настройка окна и фрейма
+                SetSettings(rootFrame);
+
                 // Обеспечение активности текущего окна
                 Window.Current.Activate();
+            }
+        }
+
+        /// <summary>
+        /// Настройка окна и фрейма
+        /// </summary>
+        /// <param name="rootFrame">Главный фрейм</param>
+        private void SetSettings(Frame rootFrame)
+        {
+            if (Extensions.AppExtension.IsMobile)
+            {
+                Extensions.AppSettingsExtension settingsEx =
+                    new Extensions.MobileSettingsExtension(rootFrame);
+                Extensions.MobileSettings settings =
+                    (Extensions.MobileSettings)settingsEx.Create();
+                settings.SetSettings();
+            }
+            else
+            {
+                Extensions.AppSettingsExtension settingsEx =
+                    new Extensions.DesktopSettingsExtension(rootFrame);
+                Extensions.DesktopSettings settings =
+                    (Extensions.DesktopSettings)settingsEx.Create();
+                settings.SetSettings();
             }
         }
 
@@ -85,7 +113,7 @@ namespace ArtTherapy
         /// </summary>
         /// <param name="sender">Фрейм, для которого произошел сбой навигации</param>
         /// <param name="e">Сведения о сбое навигации</param>
-        void OnNavigationFailed(object sender, NavigationFailedEventArgs e)
+        private void OnNavigationFailed(object sender, NavigationFailedEventArgs e)
         {
             throw new Exception("Failed to load Page " + e.SourcePageType.FullName);
         }

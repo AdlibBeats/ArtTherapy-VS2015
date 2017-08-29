@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ArtTherapy.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
@@ -21,14 +22,22 @@ namespace ArtTherapy.Pages.MenuPages
         public string Title
         {
             get { return _Title; }
-            set { _Title = GetValue(value, nameof(MenuPage.Title)); }
+            set
+            {
+                _Title = value;
+                OnPropertyChanged(nameof(Title));
+            }
         }
         private string _Title;
 
         public NavigateEventTypes NavigateEventType
         {
             get { return _NavigateEventType; }
-            set { _NavigateEventType = GetValue(value, nameof(MenuPage.NavigateEventType)); }
+            set
+            {
+                _NavigateEventType = value;
+                OnPropertyChanged(nameof(NavigateEventType));
+            }
         }
         private NavigateEventTypes _NavigateEventType;
 
@@ -40,6 +49,7 @@ namespace ArtTherapy.Pages.MenuPages
 
             Title = "Меню";
             NavigateEventType = NavigateEventTypes.ListBoxSelectionChanged;
+            this.DataContext = new MenuViewModel();
             Initialized?.Invoke(this, new EventArgs());
         }
 
@@ -50,24 +60,16 @@ namespace ArtTherapy.Pages.MenuPages
 
         private void BackButton_Click(object sender, RoutedEventArgs e)
         {
-            if (MainFrame.CanGoBack)
-                MainFrame.GoBack();
-        }
-
-        private void MainFrame_Navigated(object sender, NavigationEventArgs e)
-        {
-            //TODO:
+            //if (MainFrame.CanGoBack)
+            //    MainFrame.GoBack();
         }
 
         #region INotifyPropertyChanged Members
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        private T GetValue<T>(T value, string propertyName)
-        {
+        private void OnPropertyChanged(string propertyName) =>
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-            return value;
-        }
 
         #endregion
     }

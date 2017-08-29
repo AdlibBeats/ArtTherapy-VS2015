@@ -14,9 +14,9 @@ using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 
-namespace ArtTherapy.Pages.AboutAppPages
+namespace ArtTherapy.Pages.ProfilePages
 {
-    public sealed partial class AboutAppPage : Page, IPage
+    public sealed partial class ProfilePage : Page, IPage
     {
         public string Title
         {
@@ -41,11 +41,11 @@ namespace ArtTherapy.Pages.AboutAppPages
         private NavigateEventTypes _NavigateEventType;
 
         public event EventHandler<EventArgs> Initialized;
-        public AboutAppPage()
+        public ProfilePage()
         {
             this.InitializeComponent();
 
-            Title = "О приложении";
+            Title = "Профиль";
             NavigateEventType = NavigateEventTypes.ListBoxSelectionChanged;
             Initialized?.Invoke(this, new EventArgs());
         }

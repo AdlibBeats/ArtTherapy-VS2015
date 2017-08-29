@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
@@ -13,18 +14,49 @@ using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 
-// Шаблон элемента пустой страницы задокументирован по адресу http://go.microsoft.com/fwlink/?LinkId=234238
-
 namespace ArtTherapy.Pages.SettingsPages
 {
-    /// <summary>
-    /// Пустая страница, которую можно использовать саму по себе или для перехода внутри фрейма.
-    /// </summary>
-    public sealed partial class SettingsPage : Page
+    public sealed partial class SettingsPage : Page, IPage
     {
+        public string Title
+        {
+            get { return _Title; }
+            set
+            {
+                _Title = value;
+                OnPropertyChanged(nameof(Title));
+            }
+        }
+        private string _Title;
+
+        public NavigateEventTypes NavigateEventType
+        {
+            get { return _NavigateEventType; }
+            set
+            {
+                _NavigateEventType = value;
+                OnPropertyChanged(nameof(NavigateEventType));
+            }
+        }
+        private NavigateEventTypes _NavigateEventType;
+
+        public event EventHandler<EventArgs> Initialized;
         public SettingsPage()
         {
             this.InitializeComponent();
+
+            Title = "Настройки";
+            NavigateEventType = NavigateEventTypes.ListBoxSelectionChanged;
+            Initialized?.Invoke(this, new EventArgs());
         }
+
+        #region INotifyPropertyChanged Members
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        private void OnPropertyChanged(string propertyName) =>
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+
+        #endregion
     }
 }
