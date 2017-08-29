@@ -4,6 +4,17 @@ namespace ArtTherapy.Models.ProfileModels
 {
     public class ProfileModel : BaseModel
     {
+        public bool IsChecked
+        {
+            get { return _IsChecked; }
+            set
+            {
+                _IsChecked = value;
+                OnPropertyChanged(nameof(IsChecked));
+            }
+        }
+        private bool _IsChecked;
+
         public ImageSource Avatar
         {
             get { return _Avatar; }
@@ -14,6 +25,7 @@ namespace ArtTherapy.Models.ProfileModels
             }
         }
         private ImageSource _Avatar;
+
         public string FirstName
         {
             get { return _FirstName; }

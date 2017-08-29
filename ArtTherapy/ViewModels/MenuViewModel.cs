@@ -48,6 +48,8 @@ namespace ArtTherapy.ViewModels
         public void Execute(object parameter)
         {
             ViewModel.FrameModel.Content = new ProfilePage();
+            ViewModel.ProfileModel.IsChecked = true;
+            ViewModel.MenuModel.SelectedIndex = -1;
         }
         #endregion
     }
@@ -81,7 +83,10 @@ namespace ArtTherapy.ViewModels
         {
             var currentItemModel = parameter as CurrentItemModel;
             if (currentItemModel != null)
+            {
                 ViewModel.FrameModel.Content = currentItemModel.Content;
+                ViewModel.ProfileModel.IsChecked = false;
+            }
         }
         #endregion
     }
@@ -100,7 +105,8 @@ namespace ArtTherapy.ViewModels
                     new CurrentItemModel() { Icon = "\xE7C3", Name = "Статьи", ItemsGroup=ItemsGroup.GroupOne, Content = new PostPage() },
                     new CurrentItemModel() { Icon = "\xE77F", Name = "О приложении", ItemsGroup=ItemsGroup.GroupTwo, Content = new AboutAppPage() },
                     new CurrentItemModel() { Icon = "\xE7F4", Name = "Настройки", ItemsGroup=ItemsGroup.GroupThree, Content = new SettingsPage() }
-                }
+                },
+                SelectedIndex = 0
             };
 
             MenuModel.GroupItems.Source =
@@ -115,7 +121,8 @@ namespace ArtTherapy.ViewModels
                 {
                     CreateOptions = BitmapCreateOptions.IgnoreImageCache,
                     UriSource = new Uri("ms-appx:///Avatar/avatar.jpg", UriKind.RelativeOrAbsolute)
-                }
+                },
+                IsChecked = false
             };
 
             FrameModel = new FrameModel()

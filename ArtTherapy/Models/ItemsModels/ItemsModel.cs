@@ -5,6 +5,17 @@ namespace ArtTherapy.Models.ItemsModels
 {
     public class ItemsModel : BaseModel
     {
+        public int SelectedIndex
+        {
+            get { return _SelectedIndex; }
+            set
+            {
+                _SelectedIndex = value;
+                OnPropertyChanged(nameof(SelectedIndex));
+            }
+        }
+        private int _SelectedIndex;
+
         public ObservableCollection<CurrentItemModel> Items
         {
             get { return _Items; }

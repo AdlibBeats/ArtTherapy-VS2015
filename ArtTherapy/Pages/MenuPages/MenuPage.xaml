@@ -52,7 +52,8 @@
                         <RowDefinition Height="1*"/>
                         <RowDefinition Height="10"/>
                     </Grid.RowDefinitions>
-                    <Button Grid.Row="0" x:Name="profileButton" Style="{StaticResource ProfileButton}">
+                    <ToggleButton Grid.Row="0" x:Name="profileButton" Style="{StaticResource ProfileButton}"
+                                  IsChecked="{Binding ProfileModel.IsChecked, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
                         <Interactivity:Interaction.Behaviors>
                             <Interactions:EventTriggerBehavior EventName="Click" SourceObject="{Binding ElementName=profileButton}">
                                 <Interactions:InvokeCommandAction Command="{Binding ProfileClickCommand}"/>
@@ -81,13 +82,14 @@
                             <TextBlock HorizontalAlignment="Left" MaxWidth="150" Grid.Column="2" Grid.Row="2" Text="{Binding ProfileModel.MiddleName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Foreground="#FF6D6D72"/>
                             <TextBlock HorizontalAlignment="Right" Margin="0,0,10,0" Grid.Column="3" Grid.Row="1" VerticalAlignment="Center" FontSize="16" FontFamily="Segoe MDL2 Assets" Text="&#xE0E3;"/>
                         </Grid>
-                    </Button>
+                    </ToggleButton>
                     <Grid Grid.Row="1">
                         <ListBox x:Name="listBoxItems"
                                  Background="{x:Null}"
                                  SelectionMode="Single"
                                  ScrollViewer.VerticalScrollBarVisibility="Hidden"
-                                 ItemsSource="{Binding Source={StaticResource groupItems}}">
+                                 ItemsSource="{Binding Source={StaticResource groupItems}}"
+                                 SelectedIndex="{Binding MenuModel.SelectedIndex, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
                             <Interactivity:Interaction.Behaviors>
                                 <Interactions:EventTriggerBehavior EventName="SelectionChanged" SourceObject="{Binding ElementName=listBoxItems}">
                                     <Interactions:InvokeCommandAction Command="{Binding SelectionChangedCommand}" CommandParameter="{Binding ElementName=listBoxItems, Path=SelectedItem}"/>

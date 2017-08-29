@@ -272,7 +272,7 @@
     </Style>
     
     <!--Боковое меню (пункт профиль)-->
-    <Style TargetType="Button" x:Key="ProfileButton">
+    <Style TargetType="ToggleButton" x:Key="ProfileButton">
         <Setter Property="Background" Value="Transparent"/>
         <Setter Property="Foreground" Value="{StaticResource Static.TextBlock.Foreground}"/>
         <Setter Property="BorderThickness" Value="0"/>
@@ -290,7 +290,7 @@
         <Setter Property="FocusVisualMargin" Value="-3"/>
         <Setter Property="Template">
             <Setter.Value>
-                <ControlTemplate TargetType="Button">
+                <ControlTemplate TargetType="ToggleButton">
                     <Grid x:Name="RootGrid" Margin="{TemplateBinding Margin}">
                         <VisualStateManager.VisualStateGroups>
                             <VisualStateGroup x:Name="CommonStates">
@@ -309,7 +309,56 @@
                                         </ObjectAnimationUsingKeyFrames>
                                     </Storyboard>
                                 </VisualState>
-                                <VisualState x:Name="Disabled">
+                                <VisualState x:Name="Checked">
+                                    <Storyboard>
+                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Background" Storyboard.TargetName="RootBorder">
+                                            <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource Static.ListBoxItem.Selected}"/>
+                                        </ObjectAnimationUsingKeyFrames>
+                                    </Storyboard>
+                                </VisualState>
+                                <VisualState x:Name="CheckedPointerOver">
+                                    <Storyboard>
+                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Background" Storyboard.TargetName="RootBorder">
+                                            <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource Static.ListBoxItem.PointOver}"/>
+                                        </ObjectAnimationUsingKeyFrames>
+                                    </Storyboard>
+                                </VisualState>
+                                <VisualState x:Name="CheckedPressed">
+                                    <Storyboard>
+                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Background" Storyboard.TargetName="RootBorder">
+                                            <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource Static.ListBoxItem.Pressed}"/>
+                                        </ObjectAnimationUsingKeyFrames>
+                                    </Storyboard>
+                                </VisualState>
+                                <VisualState x:Name="CheckedDisabled">
+                                    <Storyboard>
+                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Background" Storyboard.TargetName="RootBorder">
+                                            <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource Static.Button.Disabled}"/>
+                                        </ObjectAnimationUsingKeyFrames>
+                                    </Storyboard>
+                                </VisualState>
+                                <VisualState x:Name="Indeterminate">
+                                    <Storyboard>
+                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Background" Storyboard.TargetName="RootBorder">
+                                            <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource Static.ListBoxItem.Selected}"/>
+                                        </ObjectAnimationUsingKeyFrames>
+                                    </Storyboard>
+                                </VisualState>
+                                <VisualState x:Name="IndeterminatePointerOver">
+                                    <Storyboard>
+                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Background" Storyboard.TargetName="RootBorder">
+                                            <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource Static.ListBoxItem.PointOver}"/>
+                                        </ObjectAnimationUsingKeyFrames>
+                                    </Storyboard>
+                                </VisualState>
+                                <VisualState x:Name="IndeterminatePressed">
+                                    <Storyboard>
+                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Background" Storyboard.TargetName="RootBorder">
+                                            <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource Static.ListBoxItem.Pressed}"/>
+                                        </ObjectAnimationUsingKeyFrames>
+                                    </Storyboard>
+                                </VisualState>
+                                <VisualState x:Name="IndeterminateDisabled">
                                     <Storyboard>
                                         <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Background" Storyboard.TargetName="RootBorder">
                                             <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource Static.Button.Disabled}"/>
