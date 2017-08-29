@@ -5,6 +5,17 @@ namespace ArtTherapy.Models.ItemsModels
 {
     public class ItemsModel : BaseModel
     {
+        public bool IsMenuPaneOpen
+        {
+            get { return _IsMenuPaneOpen; }
+            set
+            {
+                _IsMenuPaneOpen = value;
+                OnPropertyChanged(nameof(IsMenuPaneOpen));
+            }
+        }
+        private bool _IsMenuPaneOpen;
+
         public int SelectedIndex
         {
             get { return _SelectedIndex; }

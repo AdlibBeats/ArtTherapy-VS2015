@@ -44,7 +44,8 @@
             </RelativePanel>
             <ProgressRing Grid.Column="2" VerticalAlignment="Center" HorizontalAlignment="Center" Width="30" Height="30" Foreground="{StaticResource Static.Button.Background}"/>
         </Grid>
-        <SplitView Grid.Row="1" Name="MainSplitView" DisplayMode="CompactOverlay" CompactPaneLength="40" OpenPaneLength="280">
+        <SplitView Grid.Row="1" Name="MainSplitView" DisplayMode="CompactOverlay" CompactPaneLength="40" OpenPaneLength="280"
+                   IsPaneOpen="{Binding MenuModel.IsMenuPaneOpen, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
             <SplitView.Pane>
                 <Grid Background="{StaticResource Static.SplitView.CompactPane.Background}">
                     <Grid.RowDefinitions>

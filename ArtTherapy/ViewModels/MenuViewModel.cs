@@ -49,6 +49,7 @@ namespace ArtTherapy.ViewModels
         {
             ViewModel.FrameModel.Content = new ProfilePage();
             ViewModel.ProfileModel.IsChecked = true;
+            ViewModel.MenuModel.IsMenuPaneOpen = false;
             ViewModel.MenuModel.SelectedIndex = -1;
         }
         #endregion
@@ -86,6 +87,7 @@ namespace ArtTherapy.ViewModels
             {
                 ViewModel.FrameModel.Content = currentItemModel.Content;
                 ViewModel.ProfileModel.IsChecked = false;
+                ViewModel.MenuModel.IsMenuPaneOpen = false;
             }
         }
         #endregion
@@ -107,7 +109,8 @@ namespace ArtTherapy.ViewModels
                     new CurrentItemModel() { Icon = "\xE77F", Name = "О приложении", ItemsGroup=ItemsGroup.GroupTwo, Content = new AboutAppPage() },
                     new CurrentItemModel() { Icon = "\xE7F4", Name = "Настройки", ItemsGroup=ItemsGroup.GroupThree, Content = new SettingsPage() }
                 },
-                SelectedIndex = 0
+                SelectedIndex = 0,
+                IsMenuPaneOpen = false
             };
 
             MenuModel.GroupItems.Source =
