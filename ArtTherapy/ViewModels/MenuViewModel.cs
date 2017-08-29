@@ -95,6 +95,7 @@ namespace ArtTherapy.ViewModels
     {
         public MenuViewModel()
         {
+            // fix
             MenuModel = new ItemsModel()
             {
                 GroupItems = new CollectionViewSource(),
