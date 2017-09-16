@@ -5,6 +5,17 @@ namespace ArtTherapy.Models.ItemsModels
 {
     public class ItemsModel : BaseModel
     {
+        public bool CanGoBack
+        {
+            get { return _CanGoBack; }
+            set
+            {
+                _CanGoBack = value;
+                OnPropertyChanged(nameof(CanGoBack));
+            }
+        }
+        private bool _CanGoBack;
+
         public bool IsMenuPaneOpen
         {
             get { return _IsMenuPaneOpen; }
@@ -27,7 +38,7 @@ namespace ArtTherapy.Models.ItemsModels
         }
         private int _SelectedIndex;
 
-        public ObservableCollection<CurrentItemModel> Items
+        public CollectionViewSource Items
         {
             get { return _Items; }
             set
@@ -36,17 +47,6 @@ namespace ArtTherapy.Models.ItemsModels
                 OnPropertyChanged(nameof(Items));
             }
         }
-        private ObservableCollection<CurrentItemModel> _Items;
-
-        public CollectionViewSource GroupItems
-        {
-            get { return _GroupItems; }
-            set
-            {
-                _GroupItems = value;
-                OnPropertyChanged(nameof(GroupItems));
-            }
-        }
-        private CollectionViewSource _GroupItems;
+        private CollectionViewSource _Items;
     }
 }

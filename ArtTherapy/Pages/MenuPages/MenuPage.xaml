@@ -7,14 +7,17 @@
     xmlns:dc="using:ArtTherapy.ViewModels"
     xmlns:Interactivity="using:Microsoft.Xaml.Interactivity"
     xmlns:Interactions="using:Microsoft.Xaml.Interactions.Core"
+    xmlns:Ex="using:ArtTherapy.Extensions"
     mc:Ignorable="d"
-    d:DesignHeight="640" d:DesignWidth="360">
-
+    d:DesignHeight="640" d:DesignWidth="360" Loaded="Page_Loaded">
+    <Page.Resources>
+        <Ex:VisibilityConverter x:Key="visibilityConverter"/>
+    </Page.Resources>
     <Page.Transitions>
         <TransitionCollection>
             <NavigationThemeTransition>
                 <NavigationThemeTransition.DefaultNavigationTransitionInfo>
-                    <CommonNavigationTransitionInfo IsStaggeringEnabled="True" />
+                    <CommonNavigationTransitionInfo IsStaggeringEnabled="True"/>
                 </NavigationThemeTransition.DefaultNavigationTransitionInfo>
             </NavigationThemeTransition>
         </TransitionCollection>
@@ -22,7 +25,7 @@
 
     <Grid Background="{StaticResource Static.Grid.Background}">
         <Grid.Resources>
-            <CollectionViewSource x:Key="groupItems" IsSourceGrouped="True" Source="{Binding MenuModel.GroupItems.Source}" />
+            <CollectionViewSource x:Key="menuItems" IsSourceGrouped="True" Source="{Binding MenuModel.Items.Source}"/>
         </Grid.Resources>
         <Grid.RowDefinitions>
             <RowDefinition Height="40" />
@@ -33,6 +36,7 @@
                 <ColumnDefinition Width="40"/>
                 <ColumnDefinition/>
                 <ColumnDefinition Width="40"/>
+                <ColumnDefinition/>
             </Grid.ColumnDefinitions>
             <Grid Grid.Column="0">
                 <Button x:Name="menuPaneButton" Style="{StaticResource MenuButton}" Content="&#xE700;" FontSize="32">
@@ -44,8 +48,15 @@
                 </Button>
             </Grid>
             <RelativePanel Grid.Column="1">
-                <Button Name="BackButton" Style="{StaticResource MenuButton}" Content="&#xE0E2;" Click="BackButton_Click" VerticalAlignment="Center" FontSize="20" Height="40" Width="40"/>
-                <TextBlock RelativePanel.RightOf="BackButton" Margin="10" FontSize="14"
+                <Button Name="menuBackButton" Style="{StaticResource MenuButton}" Content="&#xE0E2;"
+                        Visibility="{Binding MenuModel.CanGoBack, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource visibilityConverter}}" VerticalAlignment="Center" FontSize="20" Height="40" Width="40">
+                    <Interactivity:Interaction.Behaviors>
+                        <Interactions:EventTriggerBehavior EventName="Click" SourceObject="{Binding ElementName=menuBackButton}">
+                            <Interactions:InvokeCommandAction Command="{Binding MenuBackButtonClickCommand}"/>
+                        </Interactions:EventTriggerBehavior>
+                    </Interactivity:Interaction.Behaviors>
+                </Button>
+                <TextBlock RelativePanel.RightOf="menuBackButton" Margin="10" FontSize="14"
                        Text="{Binding ElementName=rootFrame, Path=Content.Title}" TextWrapping="WrapWholeWords"/>
             </RelativePanel>
             <ProgressRing Grid.Column="2" VerticalAlignment="Center" HorizontalAlignment="Center" Width="30" Height="30" Foreground="{StaticResource Static.Button.Background}"/>
@@ -96,7 +107,7 @@
                                  Background="{x:Null}"
                                  SelectionMode="Single"
                                  ScrollViewer.VerticalScrollBarVisibility="Hidden"
-                                 ItemsSource="{Binding Source={StaticResource groupItems}}"
+                                 ItemsSource="{Binding Source={StaticResource menuItems}}"
                                  SelectedIndex="{Binding MenuModel.SelectedIndex, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
                             <Interactivity:Interaction.Behaviors>
                                 <Interactions:EventTriggerBehavior EventName="SelectionChanged" SourceObject="{Binding ElementName=listBoxItems}">
@@ -107,7 +118,7 @@
                                 <DataTemplate>
                                     <StackPanel Orientation="Horizontal">
                                         <TextBlock Text="{Binding Icon}" VerticalAlignment="Center" HorizontalAlignment="Center" FontFamily="Segoe MDL2 Assets" FontSize="18"/>
-                                        <TextBlock Text="{Binding Name}" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="10,0" />
+                                        <TextBlock Text="{Binding Title}" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="10,0" />
                                     </StackPanel>
                                 </DataTemplate>
                             </ListBox.ItemTemplate>
@@ -125,7 +136,7 @@
                 </Grid>
             </SplitView.Pane>
             <SplitView.Content>
-                <Frame Name="rootFrame" Content="{Binding FrameModel.Content, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                <Frame Name="rootFrame"/>
             </SplitView.Content>
         </SplitView>
     </Grid>

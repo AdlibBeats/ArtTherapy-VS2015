@@ -60,19 +60,12 @@ namespace ArtTherapy.Pages.MenuPages
 
             Title = "Меню";
             NavigateEventType = NavigateEventTypes.ListBoxSelectionChanged;
-            this.DataContext = new MenuViewModel();
+            this.DataContext = new MenuViewModel(rootFrame);
+        }
+
+        private void Page_Loaded(object sender, RoutedEventArgs e)
+        {
             Initialized?.Invoke(this, new EventArgs());
-        }
-
-        private void MenuButton_Click(object sender, RoutedEventArgs e)
-        {
-            MainSplitView.IsPaneOpen = !MainSplitView.IsPaneOpen;
-        }
-
-        private void BackButton_Click(object sender, RoutedEventArgs e)
-        {
-            //if (MainFrame.CanGoBack)
-            //    MainFrame.GoBack();
         }
 
         #region INotifyPropertyChanged Members

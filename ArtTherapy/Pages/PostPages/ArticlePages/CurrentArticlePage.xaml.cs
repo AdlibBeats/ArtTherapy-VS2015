@@ -14,9 +14,9 @@ using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 
-namespace ArtTherapy.Pages.PostPages
+namespace ArtTherapy.Pages.PostPages.ArticlePages
 {
-    public sealed partial class CurrentPostPage : Page, IPage
+    public sealed partial class CurrentArticlePage : Page, IPage
     {
         public uint Id
         {
@@ -52,25 +52,15 @@ namespace ArtTherapy.Pages.PostPages
         private NavigateEventTypes _NavigateEventType;
 
         public event EventHandler<EventArgs> Initialized;
-        public CurrentPostPage()
+
+        public CurrentArticlePage()
         {
             this.InitializeComponent();
 
-            Title = "Текущая статья";
+            Id = 4;
+            Title = "Статьи";
             NavigateEventType = NavigateEventTypes.ListBoxSelectionChanged;
             Initialized?.Invoke(this, new EventArgs());
-        }
-
-        protected override void OnNavigatedTo(NavigationEventArgs e)
-        {
-            base.OnNavigatedTo(e);
-
-            var parameter = e.Parameter as IPage;
-            if (parameter != null)
-            {
-                this.Title = parameter.Title;
-                this.Id = parameter.Id;
-            }
         }
 
         #region INotifyPropertyChanged Members

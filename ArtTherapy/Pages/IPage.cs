@@ -24,7 +24,6 @@ namespace ArtTherapy.Pages
         uint Id { get; set; }
         string Title { get; set; }
         NavigateEventTypes NavigateEventType { get; set; }
-        Frame Frame { get; }
         event EventHandler<EventArgs> Initialized;
     }
 }

@@ -16,11 +16,46 @@ using ArtTherapy.Models.ProfileModels;
 using Windows.UI.Xaml.Media.Imaging;
 using Windows.UI.Xaml.Controls;
 using ArtTherapy.Pages.ProfilePages;
-using ArtTherapy.Models.FrameModels;
 using ArtTherapy.Pages;
+using Windows.UI.Xaml.Navigation;
+using ArtTherapy.Pages.PostPages.StoryPages;
+using ArtTherapy.Pages.PostPages.PoetryPages;
+using ArtTherapy.Pages.PostPages.ArticlePages;
 
 namespace ArtTherapy.ViewModels
 {
+    public class MenuBackButtonClickCommand : ICommand
+    {
+        #region Public Constructor
+
+        public MenuBackButtonClickCommand(MenuViewModel viewModel)
+        {
+            ViewModel = viewModel;
+        }
+        #endregion
+
+        #region Private Members
+
+        private MenuViewModel ViewModel;
+
+        #endregion
+
+        #region ICommand Members
+
+        public event EventHandler CanExecuteChanged;
+
+        public bool CanExecute(object parameter)
+        {
+            return true;
+        }
+
+        public void Execute(object parameter)
+        {
+            ViewModel.GoBack();
+        }
+        #endregion
+    }
+
     public class MenuPaneButtonClickCommand : ICommand
     {
         #region Public Constructor
@@ -83,12 +118,12 @@ namespace ArtTherapy.ViewModels
             ViewModel.SetMenuSelectedIndex(-1);
             ViewModel.SetProfileChecked(true);
 
-            IPage currentPage = ViewModel.FrameModel.Content;
-            if (currentPage.Id != 1)
+            var currentPage = ViewModel.Frame.Content as IPage;
+            if (currentPage != null && currentPage.Id != 1)
             {
                 ViewModel.SetMenuPaneOpen(false);
-                ViewModel.SetFrameContent(new ProfilePage());
-                Debug.WriteLine(ViewModel.FrameModel.Content.Title);
+                ViewModel.FrameNavigate(typeof(ProfilePage));
+                Debug.WriteLine(ViewModel.Frame.Content.ToString());
             }
         }
         #endregion
@@ -122,13 +157,16 @@ namespace ArtTherapy.ViewModels
         public void Execute(object parameter)
         {
             var newItemModel = parameter as CurrentItemModel;
-            IPage currentPage = ViewModel.FrameModel.Content;
-            if (newItemModel != null && currentPage.Id != newItemModel.Id)
+            if (newItemModel != null)
             {
-                ViewModel.SetProfileChecked(false);
-                ViewModel.SetMenuPaneOpen(false);
-                ViewModel.SetFrameContent(newItemModel.Content);
-                Debug.WriteLine(ViewModel.FrameModel.Content.Title);
+                var currentPage = ViewModel.Frame.Content as IPage;
+                if (currentPage != null && currentPage.Id != newItemModel.Id)
+                {
+                    ViewModel.SetProfileChecked(false);
+                    ViewModel.SetMenuPaneOpen(false);
+                    ViewModel.FrameNavigate(newItemModel.Type);
+                    Debug.WriteLine(ViewModel.Frame.Content.ToString());
+                }
             }
         }
         #endregion
@@ -136,26 +174,30 @@ namespace ArtTherapy.ViewModels
 
     public class MenuViewModel : DependencyObject
     {
-        public MenuViewModel()
+        public MenuViewModel(Frame frame)
         {
+            Frame = frame;
+
+            AddNavigatedEventHandler();
+
             // fix E80F <- домик, сказки E11D
             MenuModel = new ItemsModel()
             {
-                GroupItems = new CollectionViewSource(),
-                Items = new ObservableCollection<CurrentItemModel>()
+                Items = new CollectionViewSource()
                 {
-                    new CurrentItemModel() { Id = 2, Icon = "\xE15C", Name = "Стихи", ItemsGroup=ItemsGroup.GroupOne, Content = new PostPage(2, "Стихи") },
-                    new CurrentItemModel() { Id = 3, Icon = "\xE12F", Name = "Сказки", ItemsGroup=ItemsGroup.GroupOne, Content = new PostPage(3, "Сказки") },
-                    new CurrentItemModel() { Id = 4, Icon = "\xE12A", Name = "Статьи", ItemsGroup=ItemsGroup.GroupOne, Content = new PostPage(4, "Статьи") },
-                    new CurrentItemModel() { Id = 5, Icon = "\xE11B", Name = "О приложении", ItemsGroup=ItemsGroup.GroupTwo, Content = new AboutAppPage() },
-                    new CurrentItemModel() { Id = 6, Icon = "\xE115", Name = "Настройки", ItemsGroup=ItemsGroup.GroupThree, Content = new SettingsPage() }
+                    Source = new ObservableCollection<CurrentItemModel>()
+                    {
+                        new CurrentItemModel() { Id = 2, Icon = "\xE15C", Title = "Стихи", ItemsGroup=ItemsGroup.GroupOne, Type = typeof(PoetryPage) },
+                        new CurrentItemModel() { Id = 3, Icon = "\xE12F", Title = "Сказки", ItemsGroup=ItemsGroup.GroupOne, Type = typeof(StoryPage) },
+                        new CurrentItemModel() { Id = 4, Icon = "\xE12A", Title = "Статьи", ItemsGroup=ItemsGroup.GroupOne, Type = typeof(ArticlePage) },
+                        new CurrentItemModel() { Id = 5, Icon = "\xE11B", Title = "О приложении", ItemsGroup=ItemsGroup.GroupTwo, Type = typeof(AboutAppPage) },
+                        new CurrentItemModel() { Id = 6, Icon = "\xE115", Title = "Настройки", ItemsGroup=ItemsGroup.GroupThree, Type = typeof(SettingsPage) }
+                    }
+                    .GroupBy(i => i.ItemsGroup)
                 },
                 SelectedIndex = 0,
                 IsMenuPaneOpen = false
             };
-
-            MenuModel.GroupItems.Source =
-                MenuModel.Items.GroupBy(i => i.ItemsGroup);
 
             ProfileModel = new ProfileModel()
             {
@@ -172,14 +214,27 @@ namespace ArtTherapy.ViewModels
                 IsChecked = false
             };
 
-            FrameModel = new FrameModel()
-            {
-                Content = new PostPage(2, "Стихи")
-            };
+            FrameNavigate(typeof(PoetryPage));
 
             MenuPaneButtonClickCommand = new MenuPaneButtonClickCommand(this);
             ProfileButtonClickCommand = new ProfileClickCommand(this);
             MenuListSelectionChangedCommand = new MenuListSelectionChangedCommand(this);
+            MenuBackButtonClickCommand = new MenuBackButtonClickCommand(this);
+        }
+
+        private void AddNavigatedEventHandler()
+        {
+            this.Frame.Navigated += Frame_Navigated;
+        }
+
+        private void RemoveNavigatedEventHandler()
+        {
+            this.Frame.Navigated -= Frame_Navigated;
+        }
+
+        private void Frame_Navigated(object sender, NavigationEventArgs e)
+        {
+            this.MenuModel.CanGoBack = this.Frame.CanGoBack;
         }
 
         public void SetProfileChecked(bool value)
@@ -192,9 +247,24 @@ namespace ArtTherapy.ViewModels
             this.MenuModel.IsMenuPaneOpen = value;
         }
 
-        public void SetFrameContent(IPage value)
+        public void FrameNavigate(Type value)
         {
-            this.FrameModel.Content = value;
+            this.Frame.Navigate(value);
+
+            this.Frame.BackStack.Clear();
+            this.Frame.ForwardStack.Clear();
+
+            this.MenuModel.CanGoBack = this.Frame.CanGoBack;
+        }
+
+        public void FrameNavigate(Type value, object parameter)
+        {
+            this.Frame.Navigate(value, parameter);
+
+            this.Frame.BackStack.Clear();
+            this.Frame.ForwardStack.Clear();
+
+            this.MenuModel.CanGoBack = this.Frame.CanGoBack;
         }
 
         public void SetMenuSelectedIndex(int value)
@@ -202,7 +272,31 @@ namespace ArtTherapy.ViewModels
             this.MenuModel.SelectedIndex = value;
         }
 
+        public void GoBack()
+        {
+            if (this.Frame.CanGoBack)
+                this.Frame.GoBack();
+        }
+
         #region Public Dependency Properties
+
+        public Frame Frame
+        {
+            get { return (Frame)GetValue(FrameProperty); }
+            set { SetValue(FrameProperty, value); }
+        }
+
+        public static readonly DependencyProperty FrameProperty =
+            DependencyProperty.Register("Frame", typeof(Frame), typeof(MenuViewModel), new PropertyMetadata(null));
+
+        public ICommand MenuBackButtonClickCommand
+        {
+            get { return (ICommand)GetValue(MenuBackButtonClickCommandProperty); }
+            set { SetValue(MenuBackButtonClickCommandProperty, value); }
+        }
+
+        public static readonly DependencyProperty MenuBackButtonClickCommandProperty =
+            DependencyProperty.Register("MenuPaneButtonClickCommand", typeof(ICommand), typeof(MenuViewModel), new PropertyMetadata(null));
 
         public ICommand MenuPaneButtonClickCommand
         {
@@ -230,15 +324,6 @@ namespace ArtTherapy.ViewModels
 
         public static readonly DependencyProperty MenuListSelectionChangedCommandProperty =
             DependencyProperty.Register("MenuListSelectionChangedCommand", typeof(ICommand), typeof(MenuViewModel), new PropertyMetadata(null));
-
-        public FrameModel FrameModel
-        {
-            get { return (FrameModel)GetValue(FrameModelProperty); }
-            set { SetValue(FrameModelProperty, value); }
-        }
-        
-        public static readonly DependencyProperty FrameModelProperty =
-            DependencyProperty.Register("FrameModel", typeof(FrameModel), typeof(MenuViewModel), new PropertyMetadata(null));
 
         public ProfileModel ProfileModel
         {

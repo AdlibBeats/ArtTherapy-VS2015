@@ -54,7 +54,7 @@ namespace ArtTherapy.AppStorage
         }
         private static CurrentPostModel _CurrentPostModel;
 
-        #region Get Set Order
+        #region Get Set Post Model
         public static async Task<CurrentPostModel> GetCurrentPost()
         {
             var reader = await GetAsync("path");
@@ -75,7 +75,7 @@ namespace ArtTherapy.AppStorage
         #endregion
 
         #region Get Set Values
-        private static async Task<string> GetAsync(string fileName)
+        public static async Task<string> GetAsync(string fileName)
         {
             StorageFile file = null;
 
@@ -96,7 +96,7 @@ namespace ArtTherapy.AppStorage
             return reader;
         }
 
-        private static async Task<StorageFile> SetAsync<T>(string fileName, T value) where T : class
+        public static async Task<StorageFile> SetAsync<T>(string fileName, T value) where T : class
         {
             StorageFile file = await ApplicationData.Current.LocalFolder.CreateFileAsync(@"\" + fileName, CreationCollisionOption.ReplaceExisting);
             string writer = JsonConvert.SerializeObject(value);

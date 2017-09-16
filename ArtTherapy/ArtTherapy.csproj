@@ -99,8 +99,8 @@
     <Compile Include="Extensions\AppExtension.cs" />
     <Compile Include="Extensions\AppSettingsExtension.cs" />
     <Compile Include="Extensions\ImageSourceExtension.cs" />
+    <Compile Include="Extensions\VisibilityConverter.cs" />
     <Compile Include="Models\BaseModel.cs" />
-    <Compile Include="Models\FrameModels\FrameModel.cs" />
     <Compile Include="Models\ItemsModels\CurrentItemModel.cs" />
     <Compile Include="Models\ItemsModels\ItemsModel.cs" />
     <Compile Include="Models\PostModels\CurrentPostModel.cs" />
@@ -113,11 +113,29 @@
     <Compile Include="Pages\MenuPages\MenuPage.xaml.cs">
       <DependentUpon>MenuPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Pages\PostPages\ArticlePages\ArticlePage.xaml.cs">
+      <DependentUpon>ArticlePage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\PostPages\ArticlePages\CurrentArticlePage.xaml.cs">
+      <DependentUpon>CurrentArticlePage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Pages\PostPages\CurrentPostPage.xaml.cs">
       <DependentUpon>CurrentPostPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Pages\PostPages\PoetryPages\CurrentPoetryPage.xaml.cs">
+      <DependentUpon>CurrentPoetryPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\PostPages\PoetryPages\PoetryPage.xaml.cs">
+      <DependentUpon>PoetryPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Pages\PostPages\PostPage.xaml.cs">
       <DependentUpon>PostPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\PostPages\StoryPages\CurrentStoryPage.xaml.cs">
+      <DependentUpon>CurrentStoryPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\PostPages\StoryPages\StoryPage.xaml.cs">
+      <DependentUpon>StoryPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Pages\ProfilePages\ProfilePage.xaml.cs">
       <DependentUpon>ProfilePage.xaml</DependentUpon>
@@ -159,11 +177,35 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Pages\PostPages\ArticlePages\ArticlePage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Pages\PostPages\ArticlePages\CurrentArticlePage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Pages\PostPages\CurrentPostPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Pages\PostPages\PoetryPages\CurrentPoetryPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Pages\PostPages\PoetryPages\PoetryPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Pages\PostPages\PostPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Pages\PostPages\StoryPages\CurrentStoryPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Pages\PostPages\StoryPages\StoryPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -48,6 +48,17 @@ namespace ArtTherapy.Models.PostModels
         }
         private string _Description;
 
+        public string Text
+        {
+            get { return _Text; }
+            set
+            {
+                _Text = value;
+                OnPropertyChanged(nameof(Text));
+            }
+        }
+        private string _Text;
+
         public string Type
         {
             get { return _Type; }

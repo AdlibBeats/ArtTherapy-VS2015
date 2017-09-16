@@ -47,16 +47,16 @@ namespace ArtTherapy.Models.ItemsModels
         }
         private ItemsGroup _ItemsGroup;
 
-        public string Name
+        public string Title
         {
-            get { return _Name; }
+            get { return _Title; }
             set
             {
-                _Name = value;
-                OnPropertyChanged(nameof(Name));
+                _Title = value;
+                OnPropertyChanged(nameof(Title));
             }
         }
-        private string _Name;
+        private string _Title;
 
         public string Description
         {
@@ -69,15 +69,15 @@ namespace ArtTherapy.Models.ItemsModels
         }
         private string _Description;
 
-        public IPage Content
+        public Type Type
         {
-            get { return _Content; }
+            get { return _Type; }
             set
             {
-                _Content = value;
-                OnPropertyChanged(nameof(Content));
+                _Type = value;
+                OnPropertyChanged(nameof(Type));
             }
         }
-        private IPage _Content;
+        private Type _Type;
     }
 }
