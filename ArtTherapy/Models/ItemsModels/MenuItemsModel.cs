@@ -3,7 +3,7 @@ using Windows.UI.Xaml.Data;
 
 namespace ArtTherapy.Models.ItemsModels
 {
-    public class ItemsModel : BaseModel
+    public class MenuItemsModel : BaseModel
     {
         public bool CanGoBack
         {

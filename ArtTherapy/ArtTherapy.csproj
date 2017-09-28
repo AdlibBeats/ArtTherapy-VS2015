@@ -101,8 +101,8 @@
     <Compile Include="Extensions\ImageSourceExtension.cs" />
     <Compile Include="Extensions\VisibilityConverter.cs" />
     <Compile Include="Models\BaseModel.cs" />
-    <Compile Include="Models\ItemsModels\CurrentItemModel.cs" />
-    <Compile Include="Models\ItemsModels\ItemsModel.cs" />
+    <Compile Include="Models\ItemsModels\CurrentMenuItemModel.cs" />
+    <Compile Include="Models\ItemsModels\MenuItemsModel.cs" />
     <Compile Include="Models\PostModels\CurrentPostModel.cs" />
     <Compile Include="Models\PostModels\PostModel.cs" />
     <Compile Include="Models\ProfileModels\ProfileModel.cs" />
@@ -146,6 +146,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Securitys\CryptoSecurity.cs" />
     <Compile Include="ViewModels\MenuViewModel.cs" />
+    <Compile Include="ViewModels\PostViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <AppxManifest Include="Package.appxmanifest">

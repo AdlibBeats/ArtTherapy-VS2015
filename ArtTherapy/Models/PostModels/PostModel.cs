@@ -7,11 +7,7 @@ namespace ArtTherapy.Models.PostModels
         public ObservableCollection<CurrentPostModel> Items
         {
             get { return _Items; }
-            set
-            {
-                _Items = value;
-                OnPropertyChanged(nameof(Items));
-            }
+            set { _Items = value; }
         }
         private ObservableCollection<CurrentPostModel> _Items;
     }

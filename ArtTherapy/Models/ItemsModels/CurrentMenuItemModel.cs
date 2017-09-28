@@ -12,7 +12,7 @@ namespace ArtTherapy.Models.ItemsModels
         GroupFour,
         GroupFive,
     }
-    public class CurrentItemModel : BaseModel
+    public class CurrentMenuItemModel : BaseModel
     {
         public uint Id
         {

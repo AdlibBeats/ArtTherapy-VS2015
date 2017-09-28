@@ -25,7 +25,7 @@
 
     <Grid Background="{StaticResource Static.Grid.Background}">
         <Grid.Resources>
-            <CollectionViewSource x:Key="menuItems" IsSourceGrouped="True" Source="{Binding MenuModel.Items.Source}"/>
+            <CollectionViewSource x:Key="menuItems" IsSourceGrouped="True" Source="{Binding MenuItemsModel.Items.Source}"/>
         </Grid.Resources>
         <Grid.RowDefinitions>
             <RowDefinition Height="40" />
@@ -49,7 +49,7 @@
             </Grid>
             <RelativePanel Grid.Column="1">
                 <Button Name="menuBackButton" Style="{StaticResource MenuButton}" Content="&#xE0E2;"
-                        Visibility="{Binding MenuModel.CanGoBack, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource visibilityConverter}}" VerticalAlignment="Center" FontSize="20" Height="40" Width="40">
+                        Visibility="{Binding MenuItemsModel.CanGoBack, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource visibilityConverter}}" VerticalAlignment="Center" FontSize="20" Height="40" Width="40">
                     <Interactivity:Interaction.Behaviors>
                         <Interactions:EventTriggerBehavior EventName="Click" SourceObject="{Binding ElementName=menuBackButton}">
                             <Interactions:InvokeCommandAction Command="{Binding MenuBackButtonClickCommand}"/>
@@ -62,7 +62,7 @@
             <ProgressRing Grid.Column="2" VerticalAlignment="Center" HorizontalAlignment="Center" Width="30" Height="30" Foreground="{StaticResource Static.Button.Background}"/>
         </Grid>
         <SplitView Grid.Row="1" Name="MainSplitView" DisplayMode="CompactOverlay" CompactPaneLength="40" OpenPaneLength="280"
-                   IsPaneOpen="{Binding MenuModel.IsMenuPaneOpen, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                   IsPaneOpen="{Binding MenuItemsModel.IsMenuPaneOpen, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
             <SplitView.Pane>
                 <Grid Background="{StaticResource Static.SplitView.CompactPane.Background}">
                     <Grid.RowDefinitions>
@@ -108,7 +108,7 @@
                                  SelectionMode="Single"
                                  ScrollViewer.VerticalScrollBarVisibility="Hidden"
                                  ItemsSource="{Binding Source={StaticResource menuItems}}"
-                                 SelectedIndex="{Binding MenuModel.SelectedIndex, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                                 SelectedIndex="{Binding MenuItemsModel.SelectedIndex, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
                             <Interactivity:Interaction.Behaviors>
                                 <Interactions:EventTriggerBehavior EventName="SelectionChanged" SourceObject="{Binding ElementName=listBoxItems}">
                                     <Interactions:InvokeCommandAction Command="{Binding MenuListSelectionChangedCommand}" CommandParameter="{Binding ElementName=listBoxItems, Path=SelectedItem}"/>

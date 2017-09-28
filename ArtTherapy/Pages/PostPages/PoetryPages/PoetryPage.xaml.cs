@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ArtTherapy.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
@@ -53,6 +54,8 @@ namespace ArtTherapy.Pages.PostPages.PoetryPages
 
         public event EventHandler<EventArgs> Initialized;
 
+        private PostViewModel _viewModel;
+
         public PoetryPage()
         {
             this.InitializeComponent();
@@ -63,6 +66,20 @@ namespace ArtTherapy.Pages.PostPages.PoetryPages
             Initialized?.Invoke(this, new EventArgs());
         }
 
+        protected override void OnNavigatedTo(NavigationEventArgs e)
+        {
+            base.OnNavigatedTo(e);
+
+            DataContext = new PostViewModel("PoetryRepository");
+            //_viewModel.Initialized += _viewModel_Initialized;
+            //DataContext = _viewModel;
+        }
+
+        private void _viewModel_Initialized(object sender, EventArgs e)
+        {
+            //var viewModel = sender as PostViewModel;
+        }
+
         #region INotifyPropertyChanged Members
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -71,5 +88,10 @@ namespace ArtTherapy.Pages.PostPages.PoetryPages
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
 
         #endregion
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            //_viewModel.Initialize();
+        }
     }
 }

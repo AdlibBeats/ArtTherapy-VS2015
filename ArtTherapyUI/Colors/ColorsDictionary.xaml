@@ -4,7 +4,7 @@
     
     <SolidColorBrush x:Key="Static.TextBlock.Foreground" Color="Black"/>
     <SolidColorBrush x:Key="Static.TextBlock.Disabled" Color="#FFE4E4E4"/>
-    <SolidColorBrush x:Key="Static.Button.Background" Color="Orange"/>
+    <SolidColorBrush x:Key="Static.Button.Background" Color="Gray"/>
     <SolidColorBrush x:Key="Static.Button.PointOver" Color="#FFD39555"/>
     <SolidColorBrush x:Key="Static.Button.Pressed" Color="#FFB67534"/>
     <SolidColorBrush x:Key="Static.Button.Disabled" Color="Gray"/>

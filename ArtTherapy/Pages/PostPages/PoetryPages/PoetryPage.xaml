@@ -5,9 +5,15 @@
     xmlns:local="using:ArtTherapy.Pages.PostPages.PoetryPages"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:data="using:ArtTherapy.ViewModels"
     mc:Ignorable="d">
 
     <Grid Background="{StaticResource Static.Grid.Background}">
-        <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="24" Text="Poetry Page"/>
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition Height="50"/>
+        </Grid.RowDefinitions>
+        <ListBox Background="Transparent" ItemsSource="{Binding PostModel.Items}" DisplayMemberPath="Name"/>
+        <Button Grid.Row="1" Click="Button_Click" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Content="GetData"/>
     </Grid>
 </Page>

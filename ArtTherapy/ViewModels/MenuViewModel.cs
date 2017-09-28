@@ -156,7 +156,7 @@ namespace ArtTherapy.ViewModels
 
         public void Execute(object parameter)
         {
-            var newItemModel = parameter as CurrentItemModel;
+            var newItemModel = parameter as CurrentMenuItemModel;
             if (newItemModel != null)
             {
                 var currentPage = ViewModel.Frame.Content as IPage;
@@ -181,17 +181,17 @@ namespace ArtTherapy.ViewModels
             AddNavigatedEventHandler();
 
             // fix E80F <- домик, сказки E11D
-            MenuModel = new ItemsModel()
+            MenuItemsModel = new MenuItemsModel()
             {
                 Items = new CollectionViewSource()
                 {
-                    Source = new ObservableCollection<CurrentItemModel>()
+                    Source = new ObservableCollection<CurrentMenuItemModel>()
                     {
-                        new CurrentItemModel() { Id = 2, Icon = "\xE15C", Title = "Стихи", ItemsGroup=ItemsGroup.GroupOne, Type = typeof(PoetryPage) },
-                        new CurrentItemModel() { Id = 3, Icon = "\xE12F", Title = "Сказки", ItemsGroup=ItemsGroup.GroupOne, Type = typeof(StoryPage) },
-                        new CurrentItemModel() { Id = 4, Icon = "\xE12A", Title = "Статьи", ItemsGroup=ItemsGroup.GroupOne, Type = typeof(ArticlePage) },
-                        new CurrentItemModel() { Id = 5, Icon = "\xE11B", Title = "О приложении", ItemsGroup=ItemsGroup.GroupTwo, Type = typeof(AboutAppPage) },
-                        new CurrentItemModel() { Id = 6, Icon = "\xE115", Title = "Настройки", ItemsGroup=ItemsGroup.GroupThree, Type = typeof(SettingsPage) }
+                        new CurrentMenuItemModel() { Id = 2, Icon = "\xE15C", Title = "Стихи", ItemsGroup=ItemsGroup.GroupOne, Type = typeof(PoetryPage) },
+                        new CurrentMenuItemModel() { Id = 3, Icon = "\xE12F", Title = "Сказки", ItemsGroup=ItemsGroup.GroupOne, Type = typeof(StoryPage) },
+                        new CurrentMenuItemModel() { Id = 4, Icon = "\xE12A", Title = "Статьи", ItemsGroup=ItemsGroup.GroupOne, Type = typeof(ArticlePage) },
+                        new CurrentMenuItemModel() { Id = 5, Icon = "\xE11B", Title = "О приложении", ItemsGroup=ItemsGroup.GroupTwo, Type = typeof(AboutAppPage) },
+                        new CurrentMenuItemModel() { Id = 6, Icon = "\xE115", Title = "Настройки", ItemsGroup=ItemsGroup.GroupThree, Type = typeof(SettingsPage) }
                     }
                     .GroupBy(i => i.ItemsGroup)
                 },
@@ -234,7 +234,7 @@ namespace ArtTherapy.ViewModels
 
         private void Frame_Navigated(object sender, NavigationEventArgs e)
         {
-            this.MenuModel.CanGoBack = this.Frame.CanGoBack;
+            this.MenuItemsModel.CanGoBack = this.Frame.CanGoBack;
         }
 
         public void SetProfileChecked(bool value)
@@ -244,7 +244,7 @@ namespace ArtTherapy.ViewModels
 
         public void SetMenuPaneOpen(bool value)
         {
-            this.MenuModel.IsMenuPaneOpen = value;
+            this.MenuItemsModel.IsMenuPaneOpen = value;
         }
 
         public void FrameNavigate(Type value)
@@ -254,7 +254,7 @@ namespace ArtTherapy.ViewModels
             this.Frame.BackStack.Clear();
             this.Frame.ForwardStack.Clear();
 
-            this.MenuModel.CanGoBack = this.Frame.CanGoBack;
+            this.MenuItemsModel.CanGoBack = this.Frame.CanGoBack;
         }
 
         public void FrameNavigate(Type value, object parameter)
@@ -264,12 +264,12 @@ namespace ArtTherapy.ViewModels
             this.Frame.BackStack.Clear();
             this.Frame.ForwardStack.Clear();
 
-            this.MenuModel.CanGoBack = this.Frame.CanGoBack;
+            this.MenuItemsModel.CanGoBack = this.Frame.CanGoBack;
         }
 
         public void SetMenuSelectedIndex(int value)
         {
-            this.MenuModel.SelectedIndex = value;
+            this.MenuItemsModel.SelectedIndex = value;
         }
 
         public void GoBack()
@@ -334,14 +334,14 @@ namespace ArtTherapy.ViewModels
         public static readonly DependencyProperty ProfileModelProperty =
             DependencyProperty.Register("ProfileModel", typeof(ProfileModel), typeof(MenuViewModel), new PropertyMetadata(null));
 
-        public ItemsModel MenuModel
+        public MenuItemsModel MenuItemsModel
         {
-            get { return (ItemsModel)GetValue(MenuModelProperty); }
+            get { return (MenuItemsModel)GetValue(MenuModelProperty); }
             set { SetValue(MenuModelProperty, value); }
         }
 
         public static readonly DependencyProperty MenuModelProperty =
-            DependencyProperty.Register("MenuModel", typeof(ItemsModel), typeof(MenuViewModel), new PropertyMetadata(null));
+            DependencyProperty.Register("MenuItemsModel", typeof(MenuItemsModel), typeof(MenuViewModel), new PropertyMetadata(null));
 
         #endregion
     }
